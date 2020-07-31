@@ -4,11 +4,13 @@ import Format from 'pretty'
 
 import { Transform } from '../library/transform.js'
 
+const Require = __require
+
 async function main() {
 
   try {
 
-    let path = require.resolve('../../source/sandbox/dokno.pug')
+    let path = Require.resolve('../../source/sandbox/dokno.pug')
 
     let module = null
     module = await Transform.createModuleFromPath(path)

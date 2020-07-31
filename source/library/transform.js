@@ -1,4 +1,4 @@
-import * as Babel from '@babel/core'
+import DefaultBabel, * as ModuleBabel from '@babel/core'
 import ESLint from 'eslint'
 import FileSystem from 'fs-extra'
 import _Format from 'prettier'
@@ -14,11 +14,15 @@ import AndAttributeNode from './node/and-attribute-node.js'
 import AttributeNode from './node/attribute-node.js'
 import BlockNode from './node/block-node.js'
 import EachNode from './node/each-node.js'
+import { Package } from './package.js'
 
 import { UnrecognizedMessageTransformError } from './error/unrecognized-message-transform-error.js'
 
+const Babel = DefaultBabel || ModuleBabel
 const { ESLint: Lint } = ESLint
+const FilePath = __filePath
 const { format: Format } = _Format
+const Require = __require
 
 class Transform {
   
@@ -46,6 +50,8 @@ class Transform {
                     function ${AttributeNode.__getAttributeValue.toString()}
                     function ${AttributeNode.__addAttribute.toString()}
                     function __getNode(__option = {}) { 
+                      // Powered by ${Package.name} v${Package.version}
+                      // FilePath = '${Path.relative('', FilePath)}'
                       const __node = []
                       ${blockSource}
                       return __node
@@ -67,6 +73,8 @@ class Transform {
       .join('\n')
 
     source =  ` function __getNode(__local = {}, __option = {}) {
+                  // Powered by ${Package.name} v${Package.version}
+                  // FilePath = '${Path.relative('', FilePath)}'
                   ${local}
                   ${source} 
                   return __getNode(__option) 
@@ -142,12 +150,14 @@ class Transform {
                 const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
                 ${source}
                 export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
+                  // Powered by ${Package.name} v${Package.version}
+                  // FilePath = '${Path.relative('', FilePath)}'
                   return __getNode(__local, __option) 
                 }`
 
     source = await this.formatSource(source)
 
-    let extension = Path.extname(__filename)
+    let extension = Path.extname(FilePath)
     let modulePath = `${path}${extension}`
 
     await FileSystem.writeFile(modulePath, source, option)
@@ -158,7 +168,14 @@ class Transform {
 
   static async formatSource(source) {
 
-    let configuration = JSON5.parse(await FileSystem.readFile(require.resolve('./transform.babelrc.json')), { 'encoding': 'utf-8' })
+    let extension = null
+    extension = Path.extname(FilePath)
+    extension = extension.toLowerCase()
+
+    let configuration = null
+    configuration = JSON5.parse(await FileSystem.readFile(Require.resolve('./transform.babelrc.json')), { 'encoding': 'utf-8' })
+    configuration = configuration.env[extension === '.cjs' ? 'cjs' : 'esm']
+    
     let { code: sourceOut } = await Babel.transformAsync(source, configuration)
 
     sourceOut = Format(sourceOut, {
@@ -178,7 +195,7 @@ class Transform {
 
   static async _getLocalFromSource(source) {
 
-    let configuration = JSON5.parse(await FileSystem.readFile(require.resolve('./transform.eslintrc.json')), { 'encoding': 'utf-8' })
+    let configuration = JSON5.parse(await FileSystem.readFile(Require.resolve('./transform.eslintrc.json')), { 'encoding': 'utf-8' })
     let lint = new Lint({ 'baseConfig': configuration })
 
     let result = await lint.lintText(source)

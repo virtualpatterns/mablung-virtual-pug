@@ -1,6 +1,8 @@
-import * as ChangeCase from 'change-case'
+import DefaultChangeCase, * as ModuleChangeCase from 'change-case'
+import Path from 'path'
 
-const { paramCase: ParameterCase } = ChangeCase
+const FilePath = __filePath
+const { paramCase: ParameterCase } = DefaultChangeCase || ModuleChangeCase
 
 class Node {
 
@@ -13,8 +15,12 @@ class Node {
 
   static async createNode(node, option) {
 
+    let extension = null
+    extension = Path.extname(FilePath)
+    extension = extension.toLowerCase()
+
     let nodeClass = null
-    nodeClass = await import(`./node/${ParameterCase(node.type)}-node.js`)
+    nodeClass = await import(`./node/${ParameterCase(node.type)}-node${extension}`)
     nodeClass = nodeClass.default || nodeClass
 
     return new nodeClass(node, option)

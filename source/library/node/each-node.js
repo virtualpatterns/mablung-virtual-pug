@@ -36,7 +36,7 @@ class EachNode extends Node {
 
   /* c8 ignore next 17 */
   static __forEach(value, fn) {
-
+                
     if (Array.isArray(value)) {
 
       value.forEach(fn)

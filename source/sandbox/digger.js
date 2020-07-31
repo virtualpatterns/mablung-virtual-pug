@@ -8,12 +8,13 @@ import VirtualText from 'virtual-dom/vnode/vtext.js'
 import { Transform } from '../index.js'
 
 const Convert = _Convert({ 'VNode': VirtualNode, 'VText': VirtualText })
+const Require = __require
 
 async function main() {
 
   try {
 
-    let path = require.resolve('./digger.pug')
+    let path = Require.resolve('./digger.pug')
 
     let pugHTML = null
     pugHTML = Pug.compileFile(path)()

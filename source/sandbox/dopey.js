@@ -7,11 +7,13 @@ import Patch from 'virtual-dom/patch.js'
 
 import { Transform } from '../library/transform.js'
 
+const Require = __require
+
 async function main() {
 
   try {
 
-    let path = require.resolve('./dopey.pug')
+    let path = Require.resolve('./dopey.pug')
     let virtualFn = await Transform.getFunctionFromPath(path)
 
     let currentVirtualNode = virtualFn({ 'name': 'Frank' })[0]

@@ -3,18 +3,22 @@
   "ava": {
     "failFast": true,
     "files": [
-      "distributable/test/**/*.test.*"
+      "distributable-commonjs/test/**/*.test.*",
+      "distributable-esmodule/test/**/*.test.*"
     ],
     "nodeArguments": [
       "--no-warnings",
       "--unhandled-rejections=strict"
     ],
-    "require": [],
+    "require": [
+      "@virtualpatterns/mablung-source-map-support/install.js"
+    ],
     "verbose": true
   },
   "c8": {
     "exclude": [
-      "distributable/test"
+      "distributable-commonjs/test",
+      "distributable-esmodule/test"
     ],
     "reporter": [
       "lcov"
@@ -22,10 +26,11 @@
   },
   "description": "TBD",
   "exports": {
-    ".": "./distributable/index.js"
+    "import": "./distributable-esmodule/index.js",
+    "require": "./distributable-commonjs/index.cjs"
   },
   "license": "GPL-3.0+",
-  "main": "distributable/index.js",
+  "main": "distributable-commonjs/index.cjs",
   "name": "@virtualpatterns/mablung-virtual-pug",
   "repository": {
     "type": "git",
@@ -36,41 +41,47 @@
     "refresh:20": "shx rm -Rf node_modules",
     "refresh:30": "npm cache clean --force",
     "refresh:40": "npm install",
-    "refresh": "run-s refresh:*",
+    "refresh": "run-s --silent refresh:*",
     "upgrade:10": "npm-check-updates --upgrade",
     "upgrade:20": "shx rm -f package-lock.json",
     "upgrade:30": "npm install",
-    "upgrade": "run-s upgrade:*",
-    "clean:10": "shx rm -Rf coverage distributable process",
+    "upgrade": "run-s --silent upgrade:*",
+    "clean:10": "shx rm -Rf coverage distributable-commonjs distributable-esmodule process",
     "clean": "run-s --silent clean:*",
     "lint:10": "eslint --ignore-path .gitignore source",
     "lint:20": "depcheck",
     "lint": "run-s --silent lint:*",
-    "build:10": "babel source --copy-files --extensions .cjs,.js --keep-file-extension --out-dir distributable --source-maps",
+    "build:10": "cross-env NODE_ENV=commonjs babel source --copy-files --extensions .cjs,.js                       --out-dir distributable-commonjs --out-file-extension .cjs --source-maps",
+    "build:20": "cross-env NODE_ENV=esmodule babel source --copy-files --extensions .cjs,.js --keep-file-extension --out-dir distributable-esmodule                           --source-maps",
     "build": "run-s --silent clean lint build:*",
     "test:10": "c8 ava",
     "test": "run-s --silent build \"test:10 {@}\" --",
     "run:10": "node --no-warnings --unhandled-rejections=strict",
-    "run": "run-s build \"run:10 {@}\" --",
-    "pre:push:10": "git add coverage distributable",
+    "run": "run-s --silent build \"run:10 {@}\" --",
+    "pre:push:10": "git add coverage distributable-commonjs distributable-esmodule",
     "pre:push:20": "git commit --message=\"post-test\"",
     "pre:push": "run-s --silent test pre:push:*",
     "push:10": "npm version prerelease",
     "push:20": "git push origin master",
     "push": "run-s --silent pre:push push:*"
   },
+  "type": "module",
   "version": "0.0.1-3",
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/plugin-proposal-export-default-from": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "ava": "^3.10.1",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@virtualpatterns/mablung-babel-plugin-replace-identifier": "git+https://github.com/virtualpatterns/mablung-babel-plugin-replace-identifier",
+    "@virtualpatterns/mablung-babel-plugin-replace-string-literal": "git+https://github.com/virtualpatterns/mablung-babel-plugin-replace-string-literal",
+    "@virtualpatterns/mablung-source-map-support": "git+https://github.com/virtualpatterns/mablung-source-map-support.git",
+    "ava": "^3.11.0",
     "babel-eslint": "^10.1.0",
     "babel-polyfill": "^6.26.0",
     "c8": "^7.2.1",
+    "cross-env": "^7.0.2",
     "depcheck": "^1.0.0",
     "eslint-plugin-babel": "^5.3.1",
-    "json5": "^2.1.3",
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
     "jstransformer-coffee-script": "^1.1.1",
@@ -83,13 +94,14 @@
     "shx": "^0.3.2"
   },
   "dependencies": {
-    "@babel/core": "^7.10.5",
+    "@babel/core": "^7.11.0",
     "@pwn/is": "^1.0.2",
     "change-case": "^4.1.1",
     "eslint": "^7.5.0",
     "fs-extra": "^9.0.1",
     "html-to-vdom": "^0.7.0",
     "jsesc": "^3.0.1",
+    "json5": "^2.1.3",
     "prettier": "^2.0.5",
     "pug-filters": "^4.0.0",
     "pug-lexer": "^5.0.0",

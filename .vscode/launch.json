@@ -11,7 +11,7 @@
       "autoAttachChildProcesses": false,
       "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/distributable/sandbox/linter.js",
+      "program": "${workspaceFolder}/distributable-cjs/sandbox/ivr.cjs",
       "skipFiles": [ "<node_internals>/**" ],
       "stopOnEntry": false
     },
