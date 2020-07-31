@@ -1,0 +1,24 @@
+{
+  "env": {
+    "cjs": {
+      "plugins": [],
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": { 
+              "node": "current" 
+            }
+          }
+        ]
+      ],
+      "sourceType": "module"
+    },
+    "esm": {
+      "retainLines": true,
+      "plugins": [],
+      "presets": [],
+      "sourceType": "module"
+    },
+  }
+}
