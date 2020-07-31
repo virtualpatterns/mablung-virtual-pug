@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../../../source/test/library/resource/scenario/include/01-plain-text-script.js"],"names":["console","log"],"mappings":";;AAAAA,OAAO,CAACC,GAAR,CAAY,iBAAZ","sourcesContent":["console.log('You are awesome')"],"file":"01-plain-text-script.js"}
