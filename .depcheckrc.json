@@ -1,9 +1,17 @@
 {
   "ignores": [
     "@babel/*",
-    "@virtualpatterns/mablung-*",
-    "babel-*",
-    "eslint-*",
+    "@virtualpatterns/mablung-source-map-support",
+    "@virtualpatterns/mablung-babel-plugin-*",
+    "babel-polyfill",
     "jstransformer-*"
+  ],
+  "parsers": {
+    "*.cjs": [ "es6" ],
+    "*.js": [ "es6" ]
+  },
+  "specials": [
+    "bin",
+    "eslint"
   ]
 }
