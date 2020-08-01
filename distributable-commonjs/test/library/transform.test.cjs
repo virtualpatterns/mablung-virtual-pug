@@ -26,12 +26,12 @@ const Require = require; // const ConvertToNode = _ConvertToNode({ 'VNode': Virt
 });
 (0, _ava.default)('getFunctionSourceFromPath(path)', async test => {
   await test.notThrowsAsync(_index.Transform.getFunctionSourceFromPath(Require.resolve('./resource/00-default.pug')));
-}) // Test('createModuleFromPath(path)', async (test) => {
-//   let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
-//   let virtualFn = module.default
-//   test.notThrows(() => virtualFn())
-// })
-;
+});
+(0, _ava.default)('createModuleFromPath(path)', async test => {
+  let module = await _index.Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'));
+  let virtualFn = module.default;
+  test.notThrows(() => virtualFn());
+});
 [Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug')].forEach(path => {
   (0, _ava.default)(`getFunctionFromPath('${_path.default.relative(`${FolderPath}/resource/transform`, path)}') throws UnsupportedAttributeTransformError`, async test => {
     await test.throwsAsync(_index.Transform.getFunctionFromPath(path), {
