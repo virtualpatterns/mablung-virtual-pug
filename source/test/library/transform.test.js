@@ -33,14 +33,14 @@ Test('getFunctionSourceFromPath(path)', async (test) => {
   await test.notThrowsAsync(Transform.getFunctionSourceFromPath(Require.resolve('./resource/00-default.pug')))
 })
 
-// Test('createModuleFromPath(path)', async (test) => {
+Test('createModuleFromPath(path)', async (test) => {
 
-//   let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
-//   let virtualFn = module.default
+  let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
+  let virtualFn = module.default
 
-//   test.notThrows(() => virtualFn())
+  test.notThrows(() => virtualFn())
 
-// })
+})
 
 ;[ 
   Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug') 
