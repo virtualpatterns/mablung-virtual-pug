@@ -11,7 +11,7 @@
       "--unhandled-rejections=strict"
     ],
     "require": [
-      "@virtualpatterns/mablung-source-map-support/install.js"
+      "@virtualpatterns/mablung-source-map-support/install"
     ],
     "verbose": true
   },
@@ -97,7 +97,7 @@
     "@babel/core": "^7.11.0",
     "@pwn/is": "^1.0.2",
     "change-case": "^4.1.1",
-    "eslint": "^7.5.0",
+    "eslint": "^7.6.0",
     "fs-extra": "^9.0.1",
     "html-to-vdom": "^0.7.0",
     "jsesc": "^3.0.1",
