@@ -1,4 +1,4 @@
-import { createRequire as _createRequire } from "module"; // import '@virtualpatterns/mablung-source-map-support/install.js'
+import { createRequire as _createRequire } from "module"; // import '@virtualpatterns/mablung-source-map-support/install'
 import CreateRealNode from 'virtual-dom/create-element.js';
 import CreateNode from 'virtual-dom/h.js';
 import FormatHTML from 'pretty';

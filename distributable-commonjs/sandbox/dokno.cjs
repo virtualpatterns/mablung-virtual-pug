@@ -1,6 +1,6 @@
 "use strict";
 
-require("@virtualpatterns/mablung-source-map-support/install.js");
+require("@virtualpatterns/mablung-source-map-support/install");
 
 var _createElement = _interopRequireDefault(require("virtual-dom/create-element.js"));
 

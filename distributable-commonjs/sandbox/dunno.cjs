@@ -18,7 +18,7 @@ var _transform = require("../library/transform.cjs");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import '@virtualpatterns/mablung-source-map-support/install.js'
+// import '@virtualpatterns/mablung-source-map-support/install'
 const ConvertToNode = (0, _htmlToVdom.default)({
   'VNode': _vnode.default,
   'VText': _vtext.default

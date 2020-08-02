@@ -1,4 +1,4 @@
-import { createRequire as _createRequire } from "module";import '@virtualpatterns/mablung-source-map-support/install.js';
+import { createRequire as _createRequire } from "module";import '@virtualpatterns/mablung-source-map-support/install';
 import Pug from 'pug';
 
 import _Convert from 'html-to-vdom';
