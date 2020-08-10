@@ -7,7 +7,7 @@ const ConvertToVirtualNode = _ConvertToVirtualNode({
   VText: VirtualText
 })
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-5
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
   // FilePath = 'distributable-esmodule/library/transform.js'
 
   function __forEach(value, fn) {
@@ -67,7 +67,7 @@ function __getNode(__local = {}, __option = {}) {
     }
   }
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-5
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
     __node.push(...[__option.convertToNode('Hey, check out ')].flat())
@@ -102,7 +102,7 @@ export default function (
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-5
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
   // FilePath = 'distributable-esmodule/library/transform.js'
   return __getNode(__local, __option)
 }

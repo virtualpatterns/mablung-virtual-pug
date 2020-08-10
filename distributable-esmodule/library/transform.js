@@ -1,7 +1,7 @@
 import { createRequire as _createRequire } from "module";import _URL from "url";import DefaultBabel, * as ModuleBabel from '@babel/core';
 import ESLint from 'eslint';
 import FileSystem from 'fs-extra';
-import _Format from 'prettier';
+import BaseFormat from 'prettier';
 import Is from '@pwn/is';
 import JSON5 from 'json5';
 import Lex from 'pug-lexer';
@@ -21,7 +21,7 @@ import { UnrecognizedMessageTransformError } from './error/unrecognized-message-
 const Babel = DefaultBabel || ModuleBabel;
 const { ESLint: Lint } = ESLint;
 const FilePath = _URL.fileURLToPath(import.meta.url);
-const { format: Format } = _Format;
+const { format: Format } = BaseFormat;
 const Require = _createRequire(import.meta.url);
 
 class Transform {
