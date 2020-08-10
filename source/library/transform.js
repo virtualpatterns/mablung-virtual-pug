@@ -1,7 +1,7 @@
 import DefaultBabel, * as ModuleBabel from '@babel/core'
 import ESLint from 'eslint'
 import FileSystem from 'fs-extra'
-import _Format from 'prettier'
+import BaseFormat from 'prettier'
 import Is from '@pwn/is'
 import JSON5 from 'json5'
 import Lex from 'pug-lexer'
@@ -21,7 +21,7 @@ import { UnrecognizedMessageTransformError } from './error/unrecognized-message-
 const Babel = DefaultBabel || ModuleBabel
 const { ESLint: Lint } = ESLint
 const FilePath = __filePath
-const { format: Format } = _Format
+const { format: Format } = BaseFormat
 const Require = __require
 
 class Transform {
