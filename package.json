@@ -26,14 +26,11 @@
   },
   "description": "TBD",
   "exports": {
-    "import": {
-      ".": "./distributable-esmodule/index.js",
-      "./package.json": "./package.json"
+    ".": {
+      "import": "./distributable-esmodule/index.js",
+      "require": "./distributable-commonjs/index.cjs"
     },
-    "require": {
-      ".": "./distributable-commonjs/index.cjs",
-      "./package.json": "./package.json"
-    }
+    "./package.json": "./package.json"
   },
   "license": "GPL-3.0+",
   "main": "distributable-commonjs/index.cjs",
