@@ -8,7 +8,8 @@
   ],
   "globals": {
     "__filePath": "readonly",
-    "__require": "readonly"
+    "__require": "readonly",
+    "__transformPath": "readonly"
   },
   "parser": "babel-eslint",
   "parserOptions": {

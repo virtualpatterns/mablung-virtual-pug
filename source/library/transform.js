@@ -9,6 +9,7 @@ import Link from 'pug-linker'
 import Load from 'pug-load'
 import Parse from 'pug-parser'
 import Path from 'path'
+// import URL from 'url'
 
 import AndAttributeNode from './node/and-attribute-node.js'
 import AttributeNode from './node/attribute-node.js'
@@ -162,7 +163,13 @@ class Transform {
 
     await FileSystem.writeFile(modulePath, source, option)
 
-    return import(modulePath)
+    // return import(URL.pathToFileURL(modulePath))
+    // return import(modulePath)
+
+    // __transformPath does ...
+    //   URL.pathToFileURL if the environment is ESModule
+    //   require.resolve if the environment is CommonJS
+    return import(__transformPath(modulePath))
 
   }
 
@@ -174,7 +181,7 @@ class Transform {
 
     let configuration = null
     configuration = JSON5.parse(await FileSystem.readFile(Require.resolve('./transform.babelrc.json')), { 'encoding': 'utf-8' })
-    configuration = configuration.env[extension === '.cjs' ? 'cjs' : 'esm']
+    configuration = configuration.env[extension === '.cjs' ? 'commonjs' : 'esmodule']
     
     let { code: sourceOut } = await Babel.transformAsync(source, configuration)
 
