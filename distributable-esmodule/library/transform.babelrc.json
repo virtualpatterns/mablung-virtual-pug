@@ -1,6 +1,6 @@
 {
   "env": {
-    "cjs": {
+    "commonjs": {
       "plugins": [],
       "presets": [
         [
@@ -14,7 +14,7 @@
       ],
       "sourceType": "module"
     },
-    "esm": {
+    "esmodule": {
       "retainLines": true,
       "plugins": [],
       "presets": [],

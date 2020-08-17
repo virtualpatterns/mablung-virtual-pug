@@ -23,7 +23,7 @@ const ConvertToVirtualNode = (0, _htmlToVdom.default)({
 })
 
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   function __forEach(value, fn) {
     if (Array.isArray(value)) {
@@ -86,7 +86,7 @@ function __getNode(__local = {}, __option = {}) {
   }
 
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
     var btnType = 'info'
@@ -151,7 +151,7 @@ function _default(
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-6
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   return __getNode(__local, __option)
 }

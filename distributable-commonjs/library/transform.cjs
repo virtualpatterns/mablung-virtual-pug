@@ -197,8 +197,13 @@ class Transform {
     let extension = _path.default.extname(FilePath);
 
     let modulePath = `${path}${extension}`;
-    await _fsExtra.default.writeFile(modulePath, source, option);
-    return Promise.resolve(`${modulePath}`).then(s => _interopRequireWildcard(require(s)));
+    await _fsExtra.default.writeFile(modulePath, source, option); // return import(URL.pathToFileURL(modulePath))
+    // return import(modulePath)
+    // __transformPath does ...
+    //   URL.pathToFileURL if the environment is ESModule
+    //   require.resolve if the environment is CommonJS
+
+    return Promise.resolve(`${require.resolve(modulePath)}`).then(s => _interopRequireWildcard(require(s)));
   }
 
   static async formatSource(source) {
@@ -209,7 +214,7 @@ class Transform {
     configuration = _json.default.parse(await _fsExtra.default.readFile(Require.resolve('./transform.babelrc.json')), {
       'encoding': 'utf-8'
     });
-    configuration = configuration.env[extension === '.cjs' ? 'cjs' : 'esm'];
+    configuration = configuration.env[extension === '.cjs' ? 'commonjs' : 'esmodule'];
     let {
       code: sourceOut
     } = await Babel.transformAsync(source, configuration);
