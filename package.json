@@ -49,7 +49,7 @@
     "upgrade:20": "shx rm -f package-lock.json",
     "upgrade:30": "npm install",
     "upgrade": "run-s --silent upgrade:*",
-    "clean:10": "shx rm -Rf coverage distributable-commonjs distributable-esmodule process",
+    "clean:10": "shx rm -Rf coverage distributable-commonjs distributable-esmodule",
     "clean": "run-s --silent clean:*",
     "lint:10": "eslint --ignore-path .gitignore source",
     "lint:20": "check-dependency",
