@@ -58,7 +58,6 @@ function __getNode(__local = {}, __option = {}) {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
-          // 'CLASS': //
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -126,7 +125,8 @@ function __getNode(__local = {}, __option = {}) {
   function __getNode(__option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
     // FilePath = 'distributable-commonjs/library/transform.cjs'
-    const __node = []
+    const __node = [] // div(class!='div-class', (click)!='play()')
+    // div(class!='div-class' '(click)'!='play()')
 
     __node.push(
       __createNode(

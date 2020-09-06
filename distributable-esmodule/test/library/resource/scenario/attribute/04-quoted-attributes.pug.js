@@ -40,7 +40,7 @@ function __getNode(__local = {}, __option = {}) {
         : value.join(' ')
     } else {
       switch (name.toUpperCase()) {
-        case 'CLASS': // 'CLASS': //
+        case 'CLASS':
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -99,6 +99,8 @@ function __getNode(__local = {}, __option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
+    // div(class!='div-class', (click)!='play()')
+    // div(class!='div-class' '(click)'!='play()')
     __node.push(
       __createNode(
         'div',

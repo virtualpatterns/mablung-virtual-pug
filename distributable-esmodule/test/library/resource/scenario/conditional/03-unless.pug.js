@@ -40,7 +40,7 @@ function __getNode(__local = {}, __option = {}) {
         : value.join(' ')
     } else {
       switch (name.toUpperCase()) {
-        case 'CLASS': // 'CLASS': //
+        case 'CLASS':
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')

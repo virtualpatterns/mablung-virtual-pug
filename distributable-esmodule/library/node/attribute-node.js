@@ -56,7 +56,7 @@ class AttributeNode extends Node {
     } else {
 
       switch (name.toUpperCase()) {
-        case 'CLASS': // 'CLASS': // 
+        case 'CLASS':
           value = Object.keys(value).
           filter(key => value[key]).
           join(' ');

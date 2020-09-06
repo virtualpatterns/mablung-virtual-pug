@@ -58,7 +58,6 @@ class AttributeNode extends _node.default {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
-          // 'CLASS': // 
           value = Object.keys(value).filter(key => value[key]).join(' ');
           break;
 

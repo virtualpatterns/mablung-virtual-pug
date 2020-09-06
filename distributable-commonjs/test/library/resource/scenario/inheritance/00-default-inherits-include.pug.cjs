@@ -60,7 +60,6 @@ function __getNode(__local = {}, __option = {}) {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
-          // 'CLASS': //
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')

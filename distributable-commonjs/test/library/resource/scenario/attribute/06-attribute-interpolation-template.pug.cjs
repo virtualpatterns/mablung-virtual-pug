@@ -58,7 +58,6 @@ function __getNode(__local = {}, __option = {}) {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
-          // 'CLASS': //
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -128,7 +127,7 @@ function __getNode(__local = {}, __option = {}) {
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
     var btnType = 'info'
-    var btnSize = 'lg'
+    var btnSize = 'lg' // button(class!='btn btn-' + btnType + ' btn-' + btnSize type!='button')
 
     __node.push(
       __createNode(
@@ -153,7 +152,7 @@ function __getNode(__local = {}, __option = {}) {
 
     __node.push(...[__option.convertToNode('\n')].flat())
 
-    __node.push(...[__option.convertToNode(' ')].flat())
+    __node.push(...[__option.convertToNode(' ')].flat()) // button(class!=`btn btn-${btnType} btn-${btnSize}` type!='button')
 
     __node.push(
       __createNode(

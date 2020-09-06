@@ -58,7 +58,6 @@ function __getNode(__local = {}, __option = {}) {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
-          // 'CLASS': //
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -127,7 +126,7 @@ function __getNode(__local = {}, __option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
-    var currentUrl = '/about'
+    var currentUrl = '/about' // a(class!={active: currentUrl === '/'} href!='/') Home
 
     __node.push(
       __createNode(
@@ -160,7 +159,7 @@ function __getNode(__local = {}, __option = {}) {
 
     __node.push(...[__option.convertToNode('\n')].flat())
 
-    __node.push(...[__option.convertToNode(' ')].flat())
+    __node.push(...[__option.convertToNode(' ')].flat()) // a(class!={active: currentUrl === '/about'} href!='/about') About
 
     __node.push(
       __createNode(

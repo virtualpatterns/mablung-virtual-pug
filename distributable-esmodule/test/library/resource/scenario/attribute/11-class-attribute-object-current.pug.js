@@ -40,7 +40,7 @@ function __getNode(__local = {}, __option = {}) {
         : value.join(' ')
     } else {
       switch (name.toUpperCase()) {
-        case 'CLASS': // 'CLASS': //
+        case 'CLASS':
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -100,6 +100,7 @@ function __getNode(__local = {}, __option = {}) {
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
     var currentUrl = '/about'
+    // a(class!={active: currentUrl === '/'} href!='/') Home
     __node.push(
       __createNode(
         'a',
@@ -123,6 +124,7 @@ function __getNode(__local = {}, __option = {}) {
     __node.push(...[__option.convertToNode(' ')].flat())
     __node.push(...[__option.convertToNode('\n')].flat())
     __node.push(...[__option.convertToNode(' ')].flat())
+    // a(class!={active: currentUrl === '/about'} href!='/about') About
     __node.push(
       __createNode(
         'a',
