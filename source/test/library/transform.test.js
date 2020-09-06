@@ -1,11 +1,11 @@
 import Path from 'path'
 import Test from 'ava'
 
-// import CreateNode from 'virtual-dom/h.js'
+import CreateNode from 'virtual-dom/h.js'
 
-// import _ConvertToNode from 'html-to-vdom'
-// import VirtualNode from 'virtual-dom/vnode/vnode.js'
-// import VirtualText from 'virtual-dom/vnode/vtext.js'
+import _ConvertToNode from 'html-to-vdom'
+import VirtualNode from 'virtual-dom/vnode/vnode.js'
+import VirtualText from 'virtual-dom/vnode/vtext.js'
 
 import { Transform } from '../../index.js'
 
@@ -19,7 +19,7 @@ const FilePath = __filePath
 const FolderPath = Path.dirname(FilePath)
 const Require = __require
 
-// const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText })
 
 Test('getASTFromPath(path)', async (test) => {
   await test.notThrowsAsync(Transform.getASTFromPath(Require.resolve('./resource/00-default.pug')))
@@ -40,6 +40,21 @@ Test('createModuleFromPath(path)', async (test) => {
 
   test.notThrows(() => virtualFn())
 
+})
+
+;[ 
+  Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
+].forEach((path) => {
+
+  Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') creates 'className'`, async (test) => {
+
+    let virtualFn = await Transform.getFunctionFromPath(path)
+    let virtualNode = virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })[0]
+  
+    test.true('className' in virtualNode.properties)
+  
+  })
+    
 })
 
 ;[ 

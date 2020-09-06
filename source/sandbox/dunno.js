@@ -26,16 +26,16 @@ async function main() {
     console.log('-'.repeat(80))
     console.dir(AST, { 'depth': null })
 
-    let source = await Transform.getFunctionSourceFromPath(path)
+    // let source = await Transform.getFunctionSourceFromPath(path)
 
-    console.log('-'.repeat(80))
-    console.log('Transform.getFunctionSourceFromPath(path)')
-    console.log('-'.repeat(80))
-    console.log(source)
+    // console.log('-'.repeat(80))
+    // console.log('Transform.getFunctionSourceFromPath(path)')
+    // console.log('-'.repeat(80))
+    // console.log(source)
 
     let virtualFn = await Transform.getFunctionFromPath(path)
 
-    source = virtualFn.toString()
+    let source = virtualFn.toString()
 
     console.log('-'.repeat(80))
     console.log('Transform.getFunctionFromPath(path)')
@@ -44,10 +44,10 @@ async function main() {
 
     let virtualNode = virtualFn({ 'abc':1, 'def': 'blah', 'aaa': 1 }, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })
 
-    // console.log('-'.repeat(80))
-    // console.log('virtualFn(...)')
-    // console.log('-'.repeat(80))
-    // console.dir(virtualNode, { 'depth': null })
+    console.log('-'.repeat(80))
+    console.log('virtualFn(...)')
+    console.log('-'.repeat(80))
+    console.dir(virtualNode, { 'depth': null })
 
     // let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
     
