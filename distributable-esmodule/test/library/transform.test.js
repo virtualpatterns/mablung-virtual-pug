@@ -57,7 +57,6 @@ forEach(path => {
 
 });
 
-
 [
 Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug')].
 forEach(path => {
