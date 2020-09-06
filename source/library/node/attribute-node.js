@@ -28,13 +28,20 @@ class AttributeNode extends Node {
       // do nothing
     } else {
 
-      if ((value = __getAttributeValue(name, value, attributeNode[name])) !== undefined) { // eslint-disable-line no-undef
-        // attribute values are always not escaped and then escaped by the virtualization process
-        attributeNode[name] = value // eslint-disable-line no-undef
+      name = __getAttributeName(name) // eslint-disable-line no-undef
+      value = __getAttributeValue(name, value, attributeNode[name]) // eslint-disable-line no-undef
+
+      if (value !== undefined) {
+        attributeNode[name] = value
       }
 
     }
 
+  }
+
+  /* c8 ignore next 9 */
+  static __getAttributeName(name) {
+    return name
   }
 
   /* c8 ignore next 28 */
