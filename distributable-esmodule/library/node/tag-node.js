@@ -41,10 +41,52 @@ class TagNode extends Node {
            return __node
          })()`;
 
-      return `__node.push(__option.createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}))`;
+      return `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`;
 
     }
 
+  }
+
+  /* c8 ignore next 9 */
+  static __createNode(name, property, childNode, createNodeFn) {
+
+    name = __getNodeName(name); // eslint-disable-line no-undef
+    property = __getNodeProperty(property); // eslint-disable-line no-undef
+    childNode = __getChildNode(childNode); // eslint-disable-line no-undef
+
+    return createNodeFn(name, property, childNode);
+
+  }
+
+  /* c8 ignore next 3 */
+  static __getNodeName(name) {
+    return name;
+  }
+
+  /* c8 ignore next 17 */
+  static __getNodeProperty(property) {
+
+    let map = { 'CLASS': 'className' };
+    let entry = Object.entries(property);
+
+    entry.
+    sort(([leftName], [rightName]) => leftName.localeCompare(rightName)).
+    forEach(([name, value]) => {
+
+      if (name.toUpperCase() in map) {
+        delete property[name];
+        property[map[name] || name] = value;
+      }
+
+    });
+
+    return property;
+
+  }
+
+  /* c8 ignore next 3 */
+  static __getChildNode(node) {
+    return node;
   }}
 
 

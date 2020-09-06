@@ -23,7 +23,7 @@ const ConvertToVirtualNode = (0, _htmlToVdom.default)({
 })
 
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   function __forEach(value, fn) {
     if (Array.isArray(value)) {
@@ -42,6 +42,10 @@ function __getNode(__local = {}, __option = {}) {
     ) // eslint-disable-line no-undef
   }
 
+  function __getAttributeName(name) {
+    return name
+  }
+
   function __getAttributeValue(name, value, currentValue) {
     if (typeof value === 'boolean') {
       value = value ? name : false
@@ -54,6 +58,7 @@ function __getNode(__local = {}, __option = {}) {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
+          // 'CLASS': //
           value = Object.keys(value)
             .filter((key) => value[key])
             .join(' ')
@@ -74,31 +79,64 @@ function __getNode(__local = {}, __option = {}) {
     if (typeof value === 'boolean' && value === false) {
       // do nothing
     } else {
-      if (
-        (value = __getAttributeValue(name, value, attributeNode[name])) !==
-        undefined
-      ) {
-        // eslint-disable-line no-undef
-        // attribute values are always not escaped and then escaped by the virtualization process
-        attributeNode[name] = value // eslint-disable-line no-undef
+      name = __getAttributeName(name) // eslint-disable-line no-undef
+
+      value = __getAttributeValue(name, value, attributeNode[name]) // eslint-disable-line no-undef
+
+      if (value !== undefined) {
+        attributeNode[name] = value
       }
     }
   }
 
+  function __getNodeName(name) {
+    return name
+  }
+
+  function __getNodeProperty(property) {
+    let map = {
+      CLASS: 'className'
+    }
+    let entry = Object.entries(property)
+    entry
+      .sort(([leftName], [rightName]) => leftName.localeCompare(rightName))
+      .forEach(([name, value]) => {
+        if (name.toUpperCase() in map) {
+          delete property[name]
+          property[map[name] || name] = value
+        }
+      })
+    return property
+  }
+
+  function __getChildNode(node) {
+    return node
+  }
+
+  function __createNode(name, property, childNode, createNodeFn) {
+    name = __getNodeName(name) // eslint-disable-line no-undef
+
+    property = __getNodeProperty(property) // eslint-disable-line no-undef
+
+    childNode = __getChildNode(childNode) // eslint-disable-line no-undef
+
+    return createNodeFn(name, property, childNode)
+  }
+
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
 
     __node.push(
-      __option.createNode(
+      __createNode(
         'div',
         {},
         (() => {
           const __node = []
 
           __node.push(
-            __option.createNode(
+            __createNode(
               'p',
               {},
               (() => {
@@ -113,7 +151,7 @@ function __getNode(__local = {}, __option = {}) {
                 )
 
                 __node.push(
-                  __option.createNode(
+                  __createNode(
                     'strong',
                     {},
                     (() => {
@@ -122,14 +160,15 @@ function __getNode(__local = {}, __option = {}) {
                       __node.push(...[__option.convertToNode('strong')].flat())
 
                       return __node
-                    })()
+                    })(),
+                    __option.createNode
                   )
                 )
 
                 __node.push(...[__option.convertToNode('and')].flat())
 
                 __node.push(
-                  __option.createNode(
+                  __createNode(
                     'em',
                     {},
                     (() => {
@@ -138,7 +177,8 @@ function __getNode(__local = {}, __option = {}) {
                       __node.push(...[__option.convertToNode('em')].flat())
 
                       return __node
-                    })()
+                    })(),
+                    __option.createNode
                   )
                 )
 
@@ -149,12 +189,13 @@ function __getNode(__local = {}, __option = {}) {
                 )
 
                 return __node
-              })()
+              })(),
+              __option.createNode
             )
           )
 
           __node.push(
-            __option.createNode(
+            __createNode(
               'p',
               {},
               (() => {
@@ -165,7 +206,7 @@ function __getNode(__local = {}, __option = {}) {
                 )
 
                 __node.push(
-                  __option.createNode(
+                  __createNode(
                     'strong',
                     {},
                     (() => {
@@ -176,14 +217,15 @@ function __getNode(__local = {}, __option = {}) {
                       )
 
                       return __node
-                    })()
+                    })(),
+                    __option.createNode
                   )
                 )
 
                 __node.push(...[__option.convertToNode(' and ')].flat())
 
                 __node.push(
-                  __option.createNode(
+                  __createNode(
                     'em',
                     {},
                     (() => {
@@ -194,19 +236,22 @@ function __getNode(__local = {}, __option = {}) {
                       )
 
                       return __node
-                    })()
+                    })(),
+                    __option.createNode
                   )
                 )
 
                 __node.push(...[__option.convertToNode(' is happy.')].flat())
 
                 return __node
-              })()
+              })(),
+              __option.createNode
             )
           )
 
           return __node
-        })()
+        })(),
+        __option.createNode
       )
     ) // <div><p>If I don't write the paragraph with tag interpolation, tags like<strong>strong</strong>and<em>em</em>might produce unexpected results.</p><p>If I do, whitespace is <strong>respected</strong> and <em>everybody</em> is happy.</p></div>
 
@@ -223,7 +268,7 @@ function _default(
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-7
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   return __getNode(__local, __option)
 }

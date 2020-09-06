@@ -16,18 +16,6 @@ class MixinNode extends Node {
 
     if (this._node.call) {
 
-      // let attributesSource = []
-      // this.processAttributes(node, attributesSource, false)
-
-      // let blockSource = []
-      // this.processNodes(node, blockSource)
-
-      // source.push('_nodes = _nodes.concat(')
-      // source.push(`_mixin_${Identifier(node.name)}(`)
-      // source.push(`${attributesSource.join('\n')}, `)
-      // source.push(`${blockSource.join('\n')}`)
-      // source.push(`${node.args ? `, ${node.args}` : ''}))`)
-
       let blockAttributeNode = new BlockAttributeNode(this._node, this._option);
 
       let blockAttributeSource = null;
@@ -67,12 +55,6 @@ class MixinNode extends Node {
                   )`;
 
     } else {
-
-      // source.push(`function _mixin_${Identifier(node.name)}(attributes, block${node.args ? `, ${node.args}` : ''}) {`)
-      // source.push('let _nodes = []')
-      // this.processBlock(node.block, source)
-      // source.push('return _nodes')
-      // source.push('}')
 
       let blockNode = new BlockNode(this._node.block, this._option);
       let blockSource = await blockNode.getSource();

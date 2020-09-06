@@ -30,12 +30,20 @@ class AttributeNode extends _node.default {
   static __addAttribute(name, value, attributeNode) {
     if (typeof value === 'boolean' && value === false) {// do nothing
     } else {
-      if ((value = __getAttributeValue(name, value, attributeNode[name])) !== undefined) {
-        // eslint-disable-line no-undef
-        // attribute values are always not escaped and then escaped by the virtualization process
-        attributeNode[name] = value; // eslint-disable-line no-undef
+      name = __getAttributeName(name); // eslint-disable-line no-undef
+
+      value = __getAttributeValue(name, value, attributeNode[name]); // eslint-disable-line no-undef
+
+      if (value !== undefined) {
+        attributeNode[name] = value;
       }
     }
+  }
+  /* c8 ignore next 9 */
+
+
+  static __getAttributeName(name) {
+    return name;
   }
   /* c8 ignore next 28 */
 
@@ -50,6 +58,7 @@ class AttributeNode extends _node.default {
     } else {
       switch (name.toUpperCase()) {
         case 'CLASS':
+          // 'CLASS': // 
           value = Object.keys(value).filter(key => value[key]).join(' ');
           break;
 

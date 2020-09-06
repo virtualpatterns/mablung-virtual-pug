@@ -35,6 +35,8 @@ var _blockNode = _interopRequireDefault(require("./node/block-node.cjs"));
 
 var _eachNode = _interopRequireDefault(require("./node/each-node.cjs"));
 
+var _tagNode = _interopRequireDefault(require("./node/tag-node.cjs"));
+
 var _package = require("./package.cjs");
 
 var _unrecognizedMessageTransformError = require("./error/unrecognized-message-transform-error.cjs");
@@ -83,8 +85,13 @@ class Transform {
     let blockSource = await blockNode.getSource();
     let source = ` function ${_eachNode.default.__forEach.toString()}
                     function ${_andAttributeNode.default.__addAndAttribute.toString()}
+                    function ${_attributeNode.default.__getAttributeName.toString()}
                     function ${_attributeNode.default.__getAttributeValue.toString()}
                     function ${_attributeNode.default.__addAttribute.toString()}
+                    function ${_tagNode.default.__getNodeName.toString()}
+                    function ${_tagNode.default.__getNodeProperty.toString()}
+                    function ${_tagNode.default.__getChildNode.toString()}
+                    function ${_tagNode.default.__createNode.toString()}
                     function __getNode(__option = {}) { 
                       // Powered by ${_package.Package.name} v${_package.Package.version}
                       // FilePath = '${_path.default.relative('', FilePath)}'

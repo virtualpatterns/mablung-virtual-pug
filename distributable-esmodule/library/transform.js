@@ -15,6 +15,7 @@ import AndAttributeNode from './node/and-attribute-node.js';
 import AttributeNode from './node/attribute-node.js';
 import BlockNode from './node/block-node.js';
 import EachNode from './node/each-node.js';
+import TagNode from './node/tag-node.js';
 import { Package } from './package.js';
 
 import { UnrecognizedMessageTransformError } from './error/unrecognized-message-transform-error.js';
@@ -48,8 +49,13 @@ class Transform {
 
     let source = ` function ${EachNode.__forEach.toString()}
                     function ${AndAttributeNode.__addAndAttribute.toString()}
+                    function ${AttributeNode.__getAttributeName.toString()}
                     function ${AttributeNode.__getAttributeValue.toString()}
                     function ${AttributeNode.__addAttribute.toString()}
+                    function ${TagNode.__getNodeName.toString()}
+                    function ${TagNode.__getNodeProperty.toString()}
+                    function ${TagNode.__getChildNode.toString()}
+                    function ${TagNode.__createNode.toString()}
                     function __getNode(__option = {}) { 
                       // Powered by ${Package.name} v${Package.version}
                       // FilePath = '${Path.relative('', FilePath)}'
