@@ -12,13 +12,13 @@
           }
         ]
       ],
-      "sourceType": "module"
+      "sourceType": "unambiguous"
     },
     "esmodule": {
       "retainLines": true,
       "plugins": [],
       "presets": [],
-      "sourceType": "module"
+      "sourceType": "unambiguous"
     },
   }
 }

@@ -7,7 +7,7 @@ const ConvertToVirtualNode = _ConvertToVirtualNode({
   VText: VirtualText
 })
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
   // FilePath = 'distributable-esmodule/library/transform.js'
 
   function __forEach(value, fn) {
@@ -79,7 +79,7 @@ function __getNode(__local = {}, __option = {}) {
       .forEach(([name, value]) => {
         if (name.toUpperCase() in map) {
           delete property[name]
-          property[map[name] || name] = value
+          property[map[name.toUpperCase()] || name] = value
         }
       })
 
@@ -96,10 +96,21 @@ function __getNode(__local = {}, __option = {}) {
     return createNodeFn(name, property, childNode)
   }
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
-    __node.push(__createNode('html', {}, [], __option.createNode))
+    __node.push(
+      __createNode(
+        'div',
+        (() => {
+          const __attributeNode = {}
+          __addAttribute('class', 'content', __attributeNode)
+          return __attributeNode
+        })(),
+        [],
+        __option.createNode
+      )
+    )
     return __node
   }
   return __getNode(__option)
@@ -111,7 +122,7 @@ export default function (
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-8
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
   // FilePath = 'distributable-esmodule/library/transform.js'
   return __getNode(__local, __option)
 }

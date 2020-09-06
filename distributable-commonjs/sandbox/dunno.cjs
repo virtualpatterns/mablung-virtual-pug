@@ -37,14 +37,14 @@ async function main() {
     console.log('-'.repeat(80));
     console.dir(AST, {
       'depth': null
-    });
-    let source = await _transform.Transform.getFunctionSourceFromPath(path);
-    console.log('-'.repeat(80));
-    console.log('Transform.getFunctionSourceFromPath(path)');
-    console.log('-'.repeat(80));
-    console.log(source);
+    }); // let source = await Transform.getFunctionSourceFromPath(path)
+    // console.log('-'.repeat(80))
+    // console.log('Transform.getFunctionSourceFromPath(path)')
+    // console.log('-'.repeat(80))
+    // console.log(source)
+
     let virtualFn = await _transform.Transform.getFunctionFromPath(path);
-    source = virtualFn.toString();
+    let source = virtualFn.toString();
     console.log('-'.repeat(80));
     console.log('Transform.getFunctionFromPath(path)');
     console.log('-'.repeat(80));
@@ -56,11 +56,13 @@ async function main() {
     }, {
       'createNode': _h.default,
       'convertToNode': ConvertToNode
-    }); // console.log('-'.repeat(80))
-    // console.log('virtualFn(...)')
-    // console.log('-'.repeat(80))
-    // console.dir(virtualNode, { 'depth': null })
-    // let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
+    });
+    console.log('-'.repeat(80));
+    console.log('virtualFn(...)');
+    console.log('-'.repeat(80));
+    console.dir(virtualNode, {
+      'depth': null
+    }); // let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
     // console.log('-'.repeat(80))
     // console.log('CreateRealNode(virtualNode)')
     // console.log('-'.repeat(80))

@@ -72,7 +72,7 @@ class TagNode extends _node.default {
     entry.sort(([leftName], [rightName]) => leftName.localeCompare(rightName)).forEach(([name, value]) => {
       if (name.toUpperCase() in map) {
         delete property[name];
-        property[map[name] || name] = value;
+        property[map[name.toUpperCase()] || name] = value;
       }
     });
     return property;

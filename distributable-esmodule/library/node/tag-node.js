@@ -75,7 +75,7 @@ class TagNode extends Node {
 
       if (name.toUpperCase() in map) {
         delete property[name];
-        property[map[name] || name] = value;
+        property[map[name.toUpperCase()] || name] = value;
       }
 
     });
