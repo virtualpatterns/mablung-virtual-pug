@@ -2,18 +2,14 @@ import FileSystem from 'fs-extra'
 import Format from 'pretty'
 import Is from '@pwn/is'
 import Match from 'minimatch'
+import Path from 'path'
 import Pug from 'pug'
 
 import CreateRealNode from 'virtual-dom/create-element.js'
-// import CreateVirtualNode from 'virtual-dom/h.js'
-
-// import _ConvertToVirtualNode from 'html-to-vdom'
-// import VirtualNode from 'virtual-dom/vnode/vnode.js'
-// import VirtualText from 'virtual-dom/vnode/vtext.js'
 
 import { Transform } from '../../index.js'
 
-// const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+const FilePath = __filePath
 
 class Scenario {
 
@@ -54,8 +50,15 @@ class Scenario {
     realHTML = Pug.compileFile(this._path)(this._local)
     realHTML = Format(realHTML)
 
-    // let virtualNode = (await Transform.getFunctionFromPath(this._path))(this._local, { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode })
-    let module = await Transform.createModuleFromPath(this._path)
+    let sourcePath = this._path
+    let targetPath = `${sourcePath}${Path.extname(FilePath)}`
+
+    await Transform.createModuleFromPath(sourcePath, targetPath)
+
+    // __transformPath does ...
+    //   URL.pathToFileURL if the environment is ESModule
+    //   require.resolve if the environment is CommonJS
+    let module = await import(__transformPath(targetPath))
     let virtualFn = module.default
     let virtualNode = virtualFn(this._local)
 
