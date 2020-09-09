@@ -50,9 +50,7 @@ async function main() {
     console.log('-'.repeat(80));
     console.log(source);
     let virtualNode = virtualFn({
-      'abc': 1,
-      'def': 'blah',
-      'aaa': 1
+      'abc': function () {}
     }, {
       'createNode': _h.default,
       'convertToNode': ConvertToNode
@@ -62,15 +60,17 @@ async function main() {
     console.log('-'.repeat(80));
     console.dir(virtualNode, {
       'depth': null
-    }); // let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
-    // console.log('-'.repeat(80))
-    // console.log('CreateRealNode(virtualNode)')
-    // console.log('-'.repeat(80))
-    // // console.dir(realNode, { 'depth': 4 })
-    // // console.log('-'.repeat(80))
-    // realNode.forEach((realNode) => console.log(FormatHTML(realNode.toString()))) 
-    // console.log('-'.repeat(80))
-    // let realHTML = virtualNode
+    });
+    let realNode = virtualNode.map(virtualNode => (0, _createElement.default)(virtualNode));
+    console.log('-'.repeat(80));
+    console.log('CreateRealNode(virtualNode)');
+    console.log('-'.repeat(80));
+    console.dir(realNode, {
+      'depth': 4
+    });
+    console.log('-'.repeat(80));
+    realNode.forEach(realNode => console.log((0, _pretty.default)(realNode.toString())));
+    console.log('-'.repeat(80)); // let realHTML = virtualNode
     //   .map((virtualNode) => CreateRealNode(virtualNode))
     //   .join('\n')
     // console.log('-'.repeat(80))

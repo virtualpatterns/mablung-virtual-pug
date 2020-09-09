@@ -7,7 +7,7 @@ const ConvertToVirtualNode = _ConvertToVirtualNode({
   VText: VirtualText
 })
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
   // FilePath = 'distributable-esmodule/library/transform.js'
 
   function __forEach(value, fn) {
@@ -71,7 +71,7 @@ function __getNode(__local = {}, __option = {}) {
     return name
   }
   function __getNodeProperty(property) {
-    let map = { CLASS: 'className' }
+    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
     let entry = Object.entries(property)
 
     entry
@@ -93,10 +93,10 @@ function __getNode(__local = {}, __option = {}) {
     property = __getNodeProperty(property) // eslint-disable-line no-undef
     childNode = __getChildNode(childNode) // eslint-disable-line no-undef
 
-    return createNodeFn(name, property, childNode)
+    return createNodeFn(name, { attributes: property }, childNode)
   }
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
     var title = "On Dogs: Man's Best Friend"
@@ -174,7 +174,7 @@ export default function (
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
   // FilePath = 'distributable-esmodule/library/transform.js'
   return __getNode(__local, __option)
 }

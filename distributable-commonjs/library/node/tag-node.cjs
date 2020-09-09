@@ -53,7 +53,9 @@ class TagNode extends _node.default {
 
     childNode = __getChildNode(childNode); // eslint-disable-line no-undef
 
-    return createNodeFn(name, property, childNode);
+    return createNodeFn(name, {
+      'attributes': property
+    }, childNode);
   }
   /* c8 ignore next 3 */
 
@@ -65,9 +67,8 @@ class TagNode extends _node.default {
 
 
   static __getNodeProperty(property) {
-    let map = {
-      'CLASS': 'className'
-    };
+    let map = {}; // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
+
     let entry = Object.entries(property);
     entry.sort(([leftName], [rightName]) => leftName.localeCompare(rightName)).forEach(([name, value]) => {
       if (name.toUpperCase() in map) {

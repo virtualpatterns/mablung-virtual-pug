@@ -38,17 +38,16 @@ const ConvertToNode = (0, _htmlToVdom.default)({
   let module = await _index.Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'));
   let virtualFn = module.default;
   test.notThrows(() => virtualFn());
-});
-[Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')].forEach(path => {
-  (0, _ava.default)(`getFunctionFromPath('${_path.default.relative(`${FolderPath}/resource/transform`, path)}') creates 'className'`, async test => {
-    let virtualFn = await _index.Transform.getFunctionFromPath(path);
-    let virtualNode = virtualFn({}, {
-      'createNode': _h.default,
-      'convertToNode': ConvertToNode
-    })[0];
-    test.true('className' in virtualNode.properties);
-  });
-});
+}) // ;[ 
+//   Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
+// ].forEach((path) => {
+//   Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') includes 'className'`, async (test) => {
+//     let virtualFn = await Transform.getFunctionFromPath(path)
+//     let virtualNode = virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })[0]
+//     test.true('className' in virtualNode.properties)
+//   })
+// })
+;
 [Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug')].forEach(path => {
   (0, _ava.default)(`getFunctionFromPath('${_path.default.relative(`${FolderPath}/resource/transform`, path)}') throws UnsupportedAttributeTransformError`, async test => {
     await test.throwsAsync(_index.Transform.getFunctionFromPath(path), {

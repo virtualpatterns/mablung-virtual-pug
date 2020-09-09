@@ -181,13 +181,13 @@ class Transform {
     return fn;
   }
 
-  static async createModuleFromPath(path, option = {
+  static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${_path.default.extname(FilePath)}`, option = {
     'encoding': 'utf-8',
     'flag': 'wx'
   }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', path)}') { ... }`)
+    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
     let source = null;
-    source = await this.getFunctionSourceFromPath(path);
+    source = await this.getFunctionSourceFromPath(sourcePath);
     source = ` import CreateVirtualNode from 'virtual-dom/h.js'
                 import _ConvertToVirtualNode from 'html-to-vdom'
                 import VirtualNode from 'virtual-dom/vnode/vnode.js'
@@ -200,17 +200,13 @@ class Transform {
                   return __getNode(__local, __option) 
                 }`;
     source = await this.formatSource(source);
-
-    let extension = _path.default.extname(FilePath);
-
-    let modulePath = `${path}${extension}`;
-    await _fsExtra.default.writeFile(modulePath, source, option); // return import(URL.pathToFileURL(modulePath))
-    // return import(modulePath)
+    await _fsExtra.default.writeFile(targetPath, source, option); // return import(URL.pathToFileURL(targetPath))
+    // return import(targetPath)
     // __transformPath does ...
     //   URL.pathToFileURL if the environment is ESModule
     //   require.resolve if the environment is CommonJS
 
-    return Promise.resolve(`${require.resolve(modulePath)}`).then(s => _interopRequireWildcard(require(s)));
+    return Promise.resolve(`${require.resolve(targetPath)}`).then(s => _interopRequireWildcard(require(s)));
   }
 
   static async formatSource(source) {

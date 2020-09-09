@@ -145,11 +145,11 @@ class Transform {
 
   }
 
-  static async createModuleFromPath(path, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', path)}') { ... }`)
+  static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
+    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
 
     let source = null;
-    source = await this.getFunctionSourceFromPath(path);
+    source = await this.getFunctionSourceFromPath(sourcePath);
     source = ` import CreateVirtualNode from 'virtual-dom/h.js'
                 import _ConvertToVirtualNode from 'html-to-vdom'
                 import VirtualNode from 'virtual-dom/vnode/vnode.js'
@@ -164,18 +164,15 @@ class Transform {
 
     source = await this.formatSource(source);
 
-    let extension = Path.extname(FilePath);
-    let modulePath = `${path}${extension}`;
+    await FileSystem.writeFile(targetPath, source, option);
 
-    await FileSystem.writeFile(modulePath, source, option);
-
-    // return import(URL.pathToFileURL(modulePath))
-    // return import(modulePath)
+    // return import(URL.pathToFileURL(targetPath))
+    // return import(targetPath)
 
     // __transformPath does ...
     //   URL.pathToFileURL if the environment is ESModule
     //   require.resolve if the environment is CommonJS
-    return import(_URL2.pathToFileURL(modulePath));
+    return import(_URL2.pathToFileURL(targetPath));
 
   }
 

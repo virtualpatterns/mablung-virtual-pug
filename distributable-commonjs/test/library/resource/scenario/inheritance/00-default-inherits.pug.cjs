@@ -23,7 +23,7 @@ const ConvertToVirtualNode = (0, _htmlToVdom.default)({
 })
 
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   const { title } = __local
 
@@ -95,9 +95,8 @@ function __getNode(__local = {}, __option = {}) {
   }
 
   function __getNodeProperty(property) {
-    let map = {
-      CLASS: 'className'
-    }
+    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
+
     let entry = Object.entries(property)
     entry
       .sort(([leftName], [rightName]) => leftName.localeCompare(rightName))
@@ -121,11 +120,17 @@ function __getNode(__local = {}, __option = {}) {
 
     childNode = __getChildNode(childNode) // eslint-disable-line no-undef
 
-    return createNodeFn(name, property, childNode)
+    return createNodeFn(
+      name,
+      {
+        attributes: property
+      },
+      childNode
+    )
   }
 
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
 
@@ -323,7 +328,7 @@ function _default(
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-9
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   return __getNode(__local, __option)
 }
