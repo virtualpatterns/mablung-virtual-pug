@@ -13,6 +13,8 @@ var _is = _interopRequireDefault(require("@pwn/is"));
 
 var _minimatch = _interopRequireDefault(require("minimatch"));
 
+var _path = _interopRequireDefault(require("path"));
+
 var _pug = _interopRequireDefault(require("pug"));
 
 var _createElement = _interopRequireDefault(require("virtual-dom/create-element.js"));
@@ -25,7 +27,8 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-// const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+const FilePath = __filename;
+
 class Scenario {
   constructor(path, local = {}) {
     this._path = path;
@@ -57,9 +60,14 @@ class Scenario {
   async getHTML() {
     let realHTML = null;
     realHTML = _pug.default.compileFile(this._path)(this._local);
-    realHTML = (0, _pretty.default)(realHTML); // let virtualNode = (await Transform.getFunctionFromPath(this._path))(this._local, { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode })
+    realHTML = (0, _pretty.default)(realHTML);
+    let sourcePath = this._path;
+    let targetPath = `${sourcePath}${_path.default.extname(FilePath)}`;
+    await _index.Transform.createModuleFromPath(sourcePath, targetPath); // __transformPath does ...
+    //   URL.pathToFileURL if the environment is ESModule
+    //   require.resolve if the environment is CommonJS
 
-    let module = await _index.Transform.createModuleFromPath(this._path);
+    let module = await Promise.resolve(`${require.resolve(targetPath)}`).then(s => _interopRequireWildcard(require(s)));
     let virtualFn = module.default;
     let virtualNode = virtualFn(this._local);
     let virtualHTML = null;

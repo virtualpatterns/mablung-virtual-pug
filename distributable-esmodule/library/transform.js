@@ -1,4 +1,4 @@
-import _URL2 from "url";import { createRequire as _createRequire } from "module";import _URL from "url";import DefaultBabel, * as ModuleBabel from '@babel/core';
+import { createRequire as _createRequire } from "module";import _URL from "url";import DefaultBabel, * as ModuleBabel from '@babel/core';
 import ESLint from 'eslint';
 import FileSystem from 'fs-extra';
 import BaseFormat from 'prettier';
@@ -105,6 +105,27 @@ class Transform {
 
   }
 
+  static async getModuleSourceFromContent(content, option = { 'path': '(anonymous)' }) {
+    // console.log('Transform.getModuleSourceFromContent(content, option) { ... }')
+
+    let source = null;
+    source = await this.getFunctionSourceFromContent(content, option);
+    source = ` import CreateVirtualNode from 'virtual-dom/h.js'
+                import _ConvertToVirtualNode from 'html-to-vdom'
+                import VirtualNode from 'virtual-dom/vnode/vnode.js'
+                import VirtualText from 'virtual-dom/vnode/vtext.js'
+                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+                ${source}
+                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
+                  // Powered by ${Package.name} v${Package.version}
+                  // FilePath = '${Path.relative('', FilePath)}'
+                  return __getNode(__local, __option) 
+                }`;
+
+    return source;
+
+  }
+
   static async getASTFromPath(path) {
     // console.log(`Transform.getASTFromPath('${Path.relative('', path)}') { ... }`)
 
@@ -145,46 +166,37 @@ class Transform {
 
   }
 
+  static async getModuleSourceFromPath(path) {
+    // console.log('Transform.getModuleSourceFromPath('${Path.relative('', path)}') { ... }`)
+
+    let content = await FileSystem.readFile(path, { 'encoding': 'utf-8' });
+    let source = await this.getModuleSourceFromContent(content, { 'path': path });
+
+    return source;
+
+  }
+
   static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
     // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
 
     let source = null;
-    source = await this.getFunctionSourceFromPath(sourcePath);
-    source = ` import CreateVirtualNode from 'virtual-dom/h.js'
-                import _ConvertToVirtualNode from 'html-to-vdom'
-                import VirtualNode from 'virtual-dom/vnode/vnode.js'
-                import VirtualText from 'virtual-dom/vnode/vtext.js'
-                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
-                ${source}
-                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  // Powered by ${Package.name} v${Package.version}
-                  // FilePath = '${Path.relative('', FilePath)}'
-                  return __getNode(__local, __option) 
-                }`;
-
-    source = await this.formatSource(source);
+    source = await this.getModuleSourceFromPath(sourcePath);
+    source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
 
     await FileSystem.writeFile(targetPath, source, option);
-
-    // return import(URL.pathToFileURL(targetPath))
-    // return import(targetPath)
 
     // __transformPath does ...
     //   URL.pathToFileURL if the environment is ESModule
     //   require.resolve if the environment is CommonJS
-    return import(_URL2.pathToFileURL(targetPath));
+    // return import(__transformPath(targetPath))
 
   }
 
-  static async formatSource(source) {
-
-    let extension = null;
-    extension = Path.extname(FilePath);
-    extension = extension.toLowerCase();
+  static async formatSource(source, environment = Path.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
 
     let configuration = null;
     configuration = JSON5.parse(await FileSystem.readFile(Require.resolve('./transform.babelrc.json')), { 'encoding': 'utf-8' });
-    configuration = configuration.env[extension === '.cjs' ? 'commonjs' : 'esmodule'];
+    configuration = configuration.env[environment];
 
     let { code: sourceOut } = await Babel.transformAsync(source, configuration);
 

@@ -2,8 +2,6 @@
 
 var _parcelBundler = _interopRequireDefault(require("parcel-bundler"));
 
-var _fsExtra = _interopRequireDefault(require("fs-extra"));
-
 var _path = _interopRequireDefault(require("path"));
 
 var _puppeteer = _interopRequireDefault(require("puppeteer"));
@@ -26,14 +24,8 @@ _ava.default.before(async test => {
   let sourcePath = null;
   let targetPath = null;
   sourcePath = Require.resolve('./www/script/element.pug');
-  targetPath = `${sourcePath}${_path.default.extname(FilePath)}`;
+  targetPath = `${sourcePath}.js`;
   await _index.Transform.createModuleFromPath(sourcePath, targetPath);
-  [sourcePath, targetPath] = [targetPath, `${sourcePath}.js`];
-
-  if (sourcePath !== targetPath) {
-    await _fsExtra.default.move(sourcePath, targetPath);
-  }
-
   await new _parcelBundler.default(Require.resolve('./www/index.html'), {
     'cache': false,
     'logLevel': 2,

@@ -1,5 +1,4 @@
 import { createRequire as _createRequire } from "module";import _URL from "url";import Bundler from 'parcel-bundler';
-import FileSystem from 'fs-extra';
 import Path from 'path';
 import Browser from 'puppeteer';
 import Server from 'live-server';
@@ -17,15 +16,9 @@ Test.before(async test => {
   let targetPath = null;
 
   sourcePath = Require.resolve('./www/script/element.pug');
-  targetPath = `${sourcePath}${Path.extname(FilePath)}`;
+  targetPath = `${sourcePath}.js`;
 
   await Transform.createModuleFromPath(sourcePath, targetPath);
-
-  [sourcePath, targetPath] = [targetPath, `${sourcePath}.js`];
-
-  if (sourcePath !== targetPath) {
-    await FileSystem.move(sourcePath, targetPath);
-  }
 
   await new Bundler(Require.resolve('./www/index.html'), {
     'cache': false,

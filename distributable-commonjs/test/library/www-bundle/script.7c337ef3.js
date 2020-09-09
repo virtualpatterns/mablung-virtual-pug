@@ -12254,7 +12254,22 @@ module.exports = function initializeConverter (dependencies) {
 };
 
 },{"./lib/html-to-vdom":"../../../../node_modules/html-to-vdom/lib/html-to-vdom.js"}],"script/element.pug.js":[function(require,module,exports) {
-'use strict';
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _h = _interopRequireDefault(require("virtual-dom/h.js"));
+
+var _htmlToVdom = _interopRequireDefault(require("html-to-vdom"));
+
+var _vnode = _interopRequireDefault(require("virtual-dom/vnode/vnode.js"));
+
+var _vtext = _interopRequireDefault(require("virtual-dom/vnode/vtext.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -12275,25 +12290,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports.default = _default;
-
-var _h = _interopRequireDefault(require('virtual-dom/h.js'));
-
-var _htmlToVdom = _interopRequireDefault(require('html-to-vdom'));
-
-var _vnode = _interopRequireDefault(require('virtual-dom/vnode/vnode.js'));
-
-var _vtext = _interopRequireDefault(require('virtual-dom/vnode/vtext.js'));
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
 
 var ConvertToVirtualNode = (0, _htmlToVdom.default)({
   VNode: _vnode.default,

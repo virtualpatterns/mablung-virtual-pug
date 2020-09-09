@@ -4,27 +4,20 @@ var _path = _interopRequireDefault(require("path"));
 
 var _ava = _interopRequireDefault(require("ava"));
 
-var _h = _interopRequireDefault(require("virtual-dom/h.js"));
-
-var _htmlToVdom = _interopRequireDefault(require("html-to-vdom"));
-
-var _vnode = _interopRequireDefault(require("virtual-dom/vnode/vnode.js"));
-
-var _vtext = _interopRequireDefault(require("virtual-dom/vnode/vtext.js"));
-
 var _index = require("../../index.cjs");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import CreateNode from 'virtual-dom/h.js'
+// import _ConvertToNode from 'html-to-vdom'
+// import VirtualNode from 'virtual-dom/vnode/vnode.js'
+// import VirtualText from 'virtual-dom/vnode/vtext.js'
 const FilePath = __filename;
 
 const FolderPath = _path.default.dirname(FilePath);
 
-const Require = require;
-const ConvertToNode = (0, _htmlToVdom.default)({
-  'VNode': _vnode.default,
-  'VText': _vtext.default
-});
+const Require = require; // const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+
 (0, _ava.default)('getASTFromPath(path)', async test => {
   await test.notThrowsAsync(_index.Transform.getASTFromPath(Require.resolve('./resource/00-default.pug')));
 });
@@ -33,12 +26,12 @@ const ConvertToNode = (0, _htmlToVdom.default)({
 });
 (0, _ava.default)('getFunctionSourceFromPath(path)', async test => {
   await test.notThrowsAsync(_index.Transform.getFunctionSourceFromPath(Require.resolve('./resource/00-default.pug')));
-});
-(0, _ava.default)('createModuleFromPath(path)', async test => {
-  let module = await _index.Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'));
-  let virtualFn = module.default;
-  test.notThrows(() => virtualFn());
-}) // ;[ 
+}) // Test('createModuleFromPath(path)', async (test) => {
+//   let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
+//   let virtualFn = module.default
+//   test.notThrows(() => virtualFn())
+// })
+// ;[ 
 //   Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
 // ].forEach((path) => {
 //   Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') includes 'className'`, async (test) => {

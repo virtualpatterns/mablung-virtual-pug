@@ -1,11 +1,11 @@
 import { createRequire as _createRequire } from "module";import _URL from "url";import Path from 'path';
 import Test from 'ava';
 
-import CreateNode from 'virtual-dom/h.js';
+// import CreateNode from 'virtual-dom/h.js'
 
-import _ConvertToNode from 'html-to-vdom';
-import VirtualNode from 'virtual-dom/vnode/vnode.js';
-import VirtualText from 'virtual-dom/vnode/vtext.js';
+// import _ConvertToNode from 'html-to-vdom'
+// import VirtualNode from 'virtual-dom/vnode/vnode.js'
+// import VirtualText from 'virtual-dom/vnode/vtext.js'
 
 import { Transform } from '../../index.js';
 
@@ -19,7 +19,7 @@ const FilePath = _URL.fileURLToPath(import.meta.url);
 const FolderPath = Path.dirname(FilePath);
 const Require = _createRequire(import.meta.url);
 
-const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText });
+// const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText })
 
 Test('getASTFromPath(path)', async test => {
   await test.notThrowsAsync(Transform.getASTFromPath(Require.resolve('./resource/00-default.pug')));
@@ -31,16 +31,16 @@ Test('getSourceFromPath(path)', async test => {
 
 Test('getFunctionSourceFromPath(path)', async test => {
   await test.notThrowsAsync(Transform.getFunctionSourceFromPath(Require.resolve('./resource/00-default.pug')));
-});
-
-Test('createModuleFromPath(path)', async test => {
-
-  let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'));
-  let virtualFn = module.default;
-
-  test.notThrows(() => virtualFn());
-
 })
+
+// Test('createModuleFromPath(path)', async (test) => {
+
+//   let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
+//   let virtualFn = module.default
+
+//   test.notThrows(() => virtualFn())
+
+// })
 
 // ;[ 
 //   Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')

@@ -47,6 +47,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+// import URL from 'url'
 const Babel = ModuleBabel.default || ModuleBabel;
 const {
   ESLint: Lint
@@ -137,6 +138,26 @@ class Transform {
     return fn;
   }
 
+  static async getModuleSourceFromContent(content, option = {
+    'path': '(anonymous)'
+  }) {
+    // console.log('Transform.getModuleSourceFromContent(content, option) { ... }')
+    let source = null;
+    source = await this.getFunctionSourceFromContent(content, option);
+    source = ` import CreateVirtualNode from 'virtual-dom/h.js'
+                import _ConvertToVirtualNode from 'html-to-vdom'
+                import VirtualNode from 'virtual-dom/vnode/vnode.js'
+                import VirtualText from 'virtual-dom/vnode/vtext.js'
+                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+                ${source}
+                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
+                  // Powered by ${_package.Package.name} v${_package.Package.version}
+                  // FilePath = '${_path.default.relative('', FilePath)}'
+                  return __getNode(__local, __option) 
+                }`;
+    return source;
+  }
+
   static async getASTFromPath(path) {
     // console.log(`Transform.getASTFromPath('${Path.relative('', path)}') { ... }`)
     let content = await _fsExtra.default.readFile(path, {
@@ -181,43 +202,37 @@ class Transform {
     return fn;
   }
 
+  static async getModuleSourceFromPath(path) {
+    // console.log('Transform.getModuleSourceFromPath('${Path.relative('', path)}') { ... }`)
+    let content = await _fsExtra.default.readFile(path, {
+      'encoding': 'utf-8'
+    });
+    let source = await this.getModuleSourceFromContent(content, {
+      'path': path
+    });
+    return source;
+  }
+
   static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${_path.default.extname(FilePath)}`, option = {
     'encoding': 'utf-8',
     'flag': 'wx'
   }) {
     // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
     let source = null;
-    source = await this.getFunctionSourceFromPath(sourcePath);
-    source = ` import CreateVirtualNode from 'virtual-dom/h.js'
-                import _ConvertToVirtualNode from 'html-to-vdom'
-                import VirtualNode from 'virtual-dom/vnode/vnode.js'
-                import VirtualText from 'virtual-dom/vnode/vtext.js'
-                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
-                ${source}
-                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  // Powered by ${_package.Package.name} v${_package.Package.version}
-                  // FilePath = '${_path.default.relative('', FilePath)}'
-                  return __getNode(__local, __option) 
-                }`;
-    source = await this.formatSource(source);
-    await _fsExtra.default.writeFile(targetPath, source, option); // return import(URL.pathToFileURL(targetPath))
-    // return import(targetPath)
-    // __transformPath does ...
+    source = await this.getModuleSourceFromPath(sourcePath);
+    source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
+    await _fsExtra.default.writeFile(targetPath, source, option); // __transformPath does ...
     //   URL.pathToFileURL if the environment is ESModule
     //   require.resolve if the environment is CommonJS
-
-    return Promise.resolve(`${require.resolve(targetPath)}`).then(s => _interopRequireWildcard(require(s)));
+    // return import(__transformPath(targetPath))
   }
 
-  static async formatSource(source) {
-    let extension = null;
-    extension = _path.default.extname(FilePath);
-    extension = extension.toLowerCase();
+  static async formatSource(source, environment = _path.default.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
     let configuration = null;
     configuration = _json.default.parse(await _fsExtra.default.readFile(Require.resolve('./transform.babelrc.json')), {
       'encoding': 'utf-8'
     });
-    configuration = configuration.env[extension === '.cjs' ? 'commonjs' : 'esmodule'];
+    configuration = configuration.env[environment];
     let {
       code: sourceOut
     } = await Babel.transformAsync(source, configuration);

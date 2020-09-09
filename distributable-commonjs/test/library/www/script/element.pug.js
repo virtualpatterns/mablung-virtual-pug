@@ -1,32 +1,15 @@
-'use strict'
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
+import CreateVirtualNode from 'virtual-dom/h.js'
+import _ConvertToVirtualNode from 'html-to-vdom'
+import VirtualNode from 'virtual-dom/vnode/vnode.js'
+import VirtualText from 'virtual-dom/vnode/vtext.js'
+const ConvertToVirtualNode = _ConvertToVirtualNode({
+  VNode: VirtualNode,
+  VText: VirtualText
 })
-exports.default = _default
-
-var _h = _interopRequireDefault(require('virtual-dom/h.js'))
-
-var _htmlToVdom = _interopRequireDefault(require('html-to-vdom'))
-
-var _vnode = _interopRequireDefault(require('virtual-dom/vnode/vnode.js'))
-
-var _vtext = _interopRequireDefault(require('virtual-dom/vnode/vtext.js'))
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj }
-}
-
-const ConvertToVirtualNode = (0, _htmlToVdom.default)({
-  VNode: _vnode.default,
-  VText: _vtext.default
-})
-
 function __getNode(__local = {}, __option = {}) {
   // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   const { list } = __local
-
   function __forEach(value, fn) {
     if (Array.isArray(value)) {
       value.forEach(fn)
@@ -37,17 +20,14 @@ function __getNode(__local = {}, __option = {}) {
       return entry.length
     }
   }
-
   function __addAndAttribute(object, attributeNode) {
     Object.entries(object).forEach(([name, value]) =>
       __addAttribute(name, value, attributeNode)
     ) // eslint-disable-line no-undef
   }
-
   function __getAttributeName(name) {
     return name
   }
-
   function __getAttributeValue(name, value, currentValue) {
     if (typeof value === 'boolean') {
       value = value ? name : false
@@ -75,7 +55,6 @@ function __getNode(__local = {}, __option = {}) {
 
     return value === '' ? undefined : value
   }
-
   function __addAttribute(name, value, attributeNode) {
     if (typeof value === 'boolean' && value === false) {
       // do nothing
@@ -89,11 +68,9 @@ function __getNode(__local = {}, __option = {}) {
       }
     }
   }
-
   function __getNodeName(name) {
     return name
   }
-
   function __getNodeProperty(property) {
     let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
 
@@ -108,11 +85,9 @@ function __getNode(__local = {}, __option = {}) {
       })
     return property
   }
-
   function __getChildNode(node) {
     return node
   }
-
   function __createNode(name, property, childNode, createNodeFn) {
     name = __getNodeName(name) // eslint-disable-line no-undef
 
@@ -128,45 +103,35 @@ function __getNode(__local = {}, __option = {}) {
       childNode
     )
   }
-
   function __getNode(__option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
-
     __node.push(
       __createNode(
         'ul',
         (() => {
           const __attributeNode = {}
-
           __addAttribute('class', 'element', __attributeNode)
-
           return __attributeNode
         })(),
         (() => {
           const __node = []
-
           __forEach(list, (item, index) => {
             __node.push(
               __createNode(
                 'li',
                 (() => {
                   const __attributeNode = {}
-
                   __addAttribute('class', 'element', __attributeNode)
-
                   __addAttribute('id', index, __attributeNode)
-
                   __addAttribute('data-item', item, __attributeNode)
-
                   return __attributeNode
                 })(),
                 (() => {
                   const __node = []
                   {
                     let value = item
-
                     if (typeof value === 'string') {
                       __node.push(...[__option.convertToNode(value)].flat())
                     } else {
@@ -179,23 +144,19 @@ function __getNode(__local = {}, __option = {}) {
               )
             )
           })
-
           return __node
         })(),
         __option.createNode
       )
     )
-
     return __node
   }
-
   return __getNode(__option)
 }
-
-function _default(
+export default function (
   __local = {},
   __option = {
-    createNode: _h.default,
+    createNode: CreateVirtualNode,
     convertToNode: ConvertToVirtualNode
   }
 ) {
