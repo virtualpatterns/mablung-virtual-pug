@@ -42,20 +42,20 @@ Test('createModuleFromPath(path)', async (test) => {
 
 })
 
-;[ 
-  Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
-].forEach((path) => {
+// ;[ 
+//   Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
+// ].forEach((path) => {
 
-  Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') creates 'className'`, async (test) => {
+//   Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') includes 'className'`, async (test) => {
 
-    let virtualFn = await Transform.getFunctionFromPath(path)
-    let virtualNode = virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })[0]
+//     let virtualFn = await Transform.getFunctionFromPath(path)
+//     let virtualNode = virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })[0]
   
-    test.true('className' in virtualNode.properties)
+//     test.true('className' in virtualNode.properties)
   
-  })
+//   })
     
-})
+// })
 
 ;[ 
   Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug') 

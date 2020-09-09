@@ -54,7 +54,7 @@ class TagNode extends Node {
     property = __getNodeProperty(property) // eslint-disable-line no-undef
     childNode = __getChildNode(childNode) // eslint-disable-line no-undef
 
-    return createNodeFn(name, property, childNode)
+    return createNodeFn(name, { 'attributes': property }, childNode)
 
   }
 
@@ -66,7 +66,7 @@ class TagNode extends Node {
   /* c8 ignore next 17 */
   static __getNodeProperty(property) {
 
-    let map = { 'CLASS': 'className' }
+    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
     let entry = Object.entries(property)
 
     entry

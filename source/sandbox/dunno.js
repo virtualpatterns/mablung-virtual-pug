@@ -42,22 +42,22 @@ async function main() {
     console.log('-'.repeat(80))
     console.log(source)
 
-    let virtualNode = virtualFn({ 'abc':1, 'def': 'blah', 'aaa': 1 }, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })
+    let virtualNode = virtualFn({ 'abc': function() {} }, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })
 
     console.log('-'.repeat(80))
     console.log('virtualFn(...)')
     console.log('-'.repeat(80))
     console.dir(virtualNode, { 'depth': null })
 
-    // let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
+    let realNode = virtualNode.map((virtualNode) => CreateRealNode(virtualNode)) 
     
-    // console.log('-'.repeat(80))
-    // console.log('CreateRealNode(virtualNode)')
-    // console.log('-'.repeat(80))
-    // // console.dir(realNode, { 'depth': 4 })
-    // // console.log('-'.repeat(80))
-    // realNode.forEach((realNode) => console.log(FormatHTML(realNode.toString()))) 
-    // console.log('-'.repeat(80))
+    console.log('-'.repeat(80))
+    console.log('CreateRealNode(virtualNode)')
+    console.log('-'.repeat(80))
+    console.dir(realNode, { 'depth': 4 })
+    console.log('-'.repeat(80))
+    realNode.forEach((realNode) => console.log(FormatHTML(realNode.toString()))) 
+    console.log('-'.repeat(80))
 
     // let realHTML = virtualNode
     //   .map((virtualNode) => CreateRealNode(virtualNode))

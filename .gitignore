@@ -1,4 +1,5 @@
 .DS_Store
+/.cache
 /distributable/sandbox
 /node_modules
 /process
