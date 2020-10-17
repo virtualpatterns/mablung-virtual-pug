@@ -93,7 +93,7 @@ function __getNode(__local = {}, __option = {}) {
     property = __getNodeProperty(property) // eslint-disable-line no-undef
     childNode = __getChildNode(childNode) // eslint-disable-line no-undef
 
-    return createNodeFn(name, { attributes: property }, childNode)
+    return createNodeFn(name, { attributes: property }, childNode) // eslint-disable-line no-undef
   }
   function __getNode(__option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11

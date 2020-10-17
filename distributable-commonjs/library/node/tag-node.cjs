@@ -55,7 +55,7 @@ class TagNode extends _node.default {
 
     return createNodeFn(name, {
       'attributes': property
-    }, childNode);
+    }, childNode); // eslint-disable-line no-undef
   }
   /* c8 ignore next 3 */
 

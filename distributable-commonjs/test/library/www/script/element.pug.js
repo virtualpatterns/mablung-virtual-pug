@@ -101,7 +101,7 @@ function __getNode(__local = {}, __option = {}) {
         attributes: property
       },
       childNode
-    )
+    ) // eslint-disable-line no-undef
   }
   function __getNode(__option = {}) {
     // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11

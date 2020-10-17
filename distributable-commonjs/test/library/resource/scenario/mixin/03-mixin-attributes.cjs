@@ -124,7 +124,7 @@ function __getNode(__local = {}, __option = {}) {
         attributes: property
       },
       childNode
-    )
+    ) // eslint-disable-line no-undef
   }
 
   function __getNode(__option = {}) {

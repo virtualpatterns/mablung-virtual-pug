@@ -23,6 +23,8 @@ var _pugLinker = _interopRequireDefault(require("pug-linker"));
 
 var _pugLoad = _interopRequireDefault(require("pug-load"));
 
+var _minimatch = _interopRequireDefault(require("minimatch"));
+
 var _pugParser = _interopRequireDefault(require("pug-parser"));
 
 var _path = _interopRequireDefault(require("path"));
@@ -213,18 +215,46 @@ class Transform {
     return source;
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`, option = {
+  static async createModuleFromPath(sourcePath, targetPath = _fsExtra.default.statSync(sourcePath).isDirectory() ? sourcePath : `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`, option = {
     'encoding': 'utf-8',
     'flag': 'wx'
   }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
-    let source = null;
-    source = await this.getModuleSourceFromPath(sourcePath);
-    source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
-    await _fsExtra.default.writeFile(targetPath, source, option); // __transformPath does ...
-    //   URL.pathToFileURL if the environment is ESModule
-    //   require.resolve if the environment is CommonJS
-    // return import(__transformPath(targetPath))
+    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}', '${Path.relative('', targetPath)}', option) { ... }`)
+    let sourceInformation = await _fsExtra.default.stat(sourcePath);
+
+    if (sourceInformation.isDirectory()) {
+      let includePattern = ['*.pug'];
+      let excludePattern = ['*.skip.pug'];
+      let item = await _fsExtra.default.readdir(sourcePath, {
+        'encoding': 'utf-8',
+        'withFileTypes': true
+      });
+      let createModule = [];
+      createModule = createModule.concat(item.filter(item => item.isDirectory()).map(folder => this.createModuleFromPath(`${sourcePath}/${folder.name}`, `${targetPath}/${folder.name}`, option)));
+      createModule = createModule.concat(item.filter(item => item.isFile()).filter(file => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).filter(file => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${_path.default.basename(file.name, _path.default.extname(file.name))}${_path.default.extname(FilePath)}`), option));
+      return Promise.all(createModule);
+    } else {
+      let isCreated = false;
+
+      if (await _fsExtra.default.pathExists(targetPath)) {
+        let targetInformation = await _fsExtra.default.stat(targetPath);
+
+        if (sourceInformation.mtime > targetInformation.mtime) {
+          isCreated = true;
+        }
+      } else {
+        isCreated = true;
+      }
+
+      if (isCreated) {
+        let source = null;
+        source = await this.getModuleSourceFromPath(sourcePath);
+        source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
+        await _fsExtra.default.ensureDir(_path.default.dirname(targetPath)); // console.log(`await FileSystem.writeFile('${Path.relative('', targetPath)}', source, option)`)
+
+        return _fsExtra.default.writeFile(targetPath, source, option);
+      }
+    }
   }
 
   static async formatSource(source, environment = _path.default.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {

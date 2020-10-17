@@ -1,12 +1,13 @@
 import { createRequire as _createRequire } from "module";import _URL from "url";import DefaultBabel, * as ModuleBabel from '@babel/core';
 import ESLint from 'eslint';
 import FileSystem from 'fs-extra';
-import BaseFormat from 'prettier';
+import _Format from 'prettier';
 import Is from '@pwn/is';
 import JSON5 from 'json5';
 import Lex from 'pug-lexer';
 import Link from 'pug-linker';
 import Load from 'pug-load';
+import Match from 'minimatch';
 import Parse from 'pug-parser';
 import Path from 'path';
 // import URL from 'url'
@@ -23,7 +24,7 @@ import { UnrecognizedMessageTransformError } from './error/unrecognized-message-
 const Babel = DefaultBabel || ModuleBabel;
 const { ESLint: Lint } = ESLint;
 const FilePath = _URL.fileURLToPath(import.meta.url);
-const { format: Format } = BaseFormat;
+const { format: Format } = _Format;
 const Require = _createRequire(import.meta.url);
 
 class Transform {
@@ -176,19 +177,61 @@ class Transform {
 
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
+  static async createModuleFromPath(sourcePath, targetPath = FileSystem.statSync(sourcePath).isDirectory() ? sourcePath : `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
+    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}', '${Path.relative('', targetPath)}', option) { ... }`)
 
-    let source = null;
-    source = await this.getModuleSourceFromPath(sourcePath);
-    source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
+    let sourceInformation = await FileSystem.stat(sourcePath);
 
-    await FileSystem.writeFile(targetPath, source, option);
+    if (sourceInformation.isDirectory()) {
 
-    // __transformPath does ...
-    //   URL.pathToFileURL if the environment is ESModule
-    //   require.resolve if the environment is CommonJS
-    // return import(__transformPath(targetPath))
+      let includePattern = ['*.pug'];
+      let excludePattern = ['*.skip.pug'];
+
+      let item = await FileSystem.readdir(sourcePath, { 'encoding': 'utf-8', 'withFileTypes': true });
+
+      let createModule = [];
+
+      createModule = createModule.concat(item.
+      filter(item => item.isDirectory()).
+      map(folder => this.createModuleFromPath(`${sourcePath}/${folder.name}`, `${targetPath}/${folder.name}`, option)));
+
+      createModule = createModule.concat(item.
+      filter(item => item.isFile()).
+      filter(file => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false)).
+      filter(file => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false)).
+      map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${Path.basename(file.name, Path.extname(file.name))}${Path.extname(FilePath)}`), option));
+
+      return Promise.all(createModule);
+
+    } else {
+
+      let isCreated = false;
+
+      if (await FileSystem.pathExists(targetPath)) {
+
+        let targetInformation = await FileSystem.stat(targetPath);
+
+        if (sourceInformation.mtime > targetInformation.mtime) {
+          isCreated = true;
+        }
+
+      } else {
+        isCreated = true;
+      }
+
+      if (isCreated) {
+
+        let source = null;
+        source = await this.getModuleSourceFromPath(sourcePath);
+        source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
+
+        await FileSystem.ensureDir(Path.dirname(targetPath));
+        // console.log(`await FileSystem.writeFile('${Path.relative('', targetPath)}', source, option)`)
+        return FileSystem.writeFile(targetPath, source, option);
+
+      }
+
+    }
 
   }
 
