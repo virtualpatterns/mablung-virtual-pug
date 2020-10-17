@@ -7,7 +7,7 @@ const ConvertToVirtualNode = _ConvertToVirtualNode({
   VText: VirtualText
 })
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
   // FilePath = 'distributable-esmodule/library/transform.js'
   const { list } = __local
   function __forEach(value, fn) {
@@ -96,7 +96,7 @@ function __getNode(__local = {}, __option = {}) {
     return createNodeFn(name, { attributes: property }, childNode)
   }
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
     // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
     __node.push(
@@ -152,7 +152,7 @@ export default function (
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
   // FilePath = 'distributable-esmodule/library/transform.js'
   return __getNode(__local, __option)
 }

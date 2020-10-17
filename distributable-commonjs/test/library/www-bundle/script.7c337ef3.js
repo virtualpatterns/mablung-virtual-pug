@@ -12301,7 +12301,7 @@ function __getNode() {
 
   var __option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   var list = __local.list;
 
@@ -12423,7 +12423,7 @@ function __getNode() {
   function __getNode() {
     var __option = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
     // FilePath = 'distributable-commonjs/library/transform.cjs'
     var __node = [];
 
@@ -12479,7 +12479,7 @@ function _default() {
     convertToNode: ConvertToVirtualNode
   };
 
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-10
+  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
   // FilePath = 'distributable-commonjs/library/transform.cjs'
   return __getNode(__local, __option);
 }

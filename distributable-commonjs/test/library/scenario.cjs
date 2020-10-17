@@ -62,7 +62,8 @@ class Scenario {
     realHTML = _pug.default.compileFile(this._path)(this._local);
     realHTML = (0, _pretty.default)(realHTML);
     let sourcePath = this._path;
-    let targetPath = `${sourcePath}${_path.default.extname(FilePath)}`;
+    let targetPath = `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`; // `${sourcePath}${Path.extname(FilePath)}`
+
     await _index.Transform.createModuleFromPath(sourcePath, targetPath); // __transformPath does ...
     //   URL.pathToFileURL if the environment is ESModule
     //   require.resolve if the environment is CommonJS

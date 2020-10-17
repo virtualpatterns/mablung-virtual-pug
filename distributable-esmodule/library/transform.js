@@ -176,7 +176,7 @@ class Transform {
 
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
+  static async createModuleFromPath(sourcePath, targetPath = `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
     // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
 
     let source = null;

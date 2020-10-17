@@ -51,7 +51,7 @@ class Scenario {
     realHTML = Format(realHTML);
 
     let sourcePath = this._path;
-    let targetPath = `${sourcePath}${Path.extname(FilePath)}`;
+    let targetPath = `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}${Path.extname(FilePath)}`; // `${sourcePath}${Path.extname(FilePath)}`
 
     await Transform.createModuleFromPath(sourcePath, targetPath);
 
@@ -70,6 +70,7 @@ class Scenario {
     return {
       realHTML,
       virtualHTML };
+
 
   }
 

@@ -213,7 +213,7 @@ class Transform {
     return source;
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${_path.default.extname(FilePath)}`, option = {
+  static async createModuleFromPath(sourcePath, targetPath = `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`, option = {
     'encoding': 'utf-8',
     'flag': 'wx'
   }) {
