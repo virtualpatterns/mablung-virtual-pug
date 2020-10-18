@@ -15,6 +15,10 @@
     ],
     "verbose": true
   },
+  "bin": {
+    "transform-esm": "./distributable-esmodule/command/transform.js",
+    "transform-cjs": "./distributable-commonjs/command/transform.cjs"
+  },
   "c8": {
     "exclude": [
       "distributable-commonjs/test",
