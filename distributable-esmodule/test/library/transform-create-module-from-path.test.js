@@ -16,7 +16,7 @@ Test.before(async test => {
   let targetPath = null;
 
   sourcePath = Require.resolve('./www/script/element.pug');
-  targetPath = `${sourcePath}.js`;
+  targetPath = `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}.js`;
 
   await Transform.createModuleFromPath(sourcePath, targetPath);
 
@@ -47,7 +47,7 @@ Test.before(async test => {
 
 });
 
-Test('page.$$(\'li.element\')', async test => {
+Test.skip('page.$$(\'li.element\')', async test => {
 
   let browser = await Browser.launch();
 

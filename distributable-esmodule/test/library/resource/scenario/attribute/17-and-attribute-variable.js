@@ -1,3 +1,5 @@
+// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
+// FilePath = 'distributable-esmodule/library/transform.js'
 import CreateVirtualNode from 'virtual-dom/h.js'
 import _ConvertToVirtualNode from 'html-to-vdom'
 import VirtualNode from 'virtual-dom/vnode/vnode.js'
@@ -7,25 +9,6 @@ const ConvertToVirtualNode = _ConvertToVirtualNode({
   VText: VirtualText
 })
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-  // FilePath = 'distributable-esmodule/library/transform.js'
-
-  function __forEach(value, fn) {
-    if (Array.isArray(value)) {
-      value.forEach(fn)
-      return value.length
-    } else {
-      let entry = Object.entries(value)
-
-      entry.forEach(([name, value]) => fn(value, name))
-      return entry.length
-    }
-  }
-  function __addAndAttribute(object, attributeNode) {
-    Object.entries(object).forEach(([name, value]) =>
-      __addAttribute(name, value, attributeNode)
-    ) // eslint-disable-line no-undef
-  }
   function __getAttributeName(name) {
     return name
   }
@@ -59,13 +42,18 @@ function __getNode(__local = {}, __option = {}) {
     if (typeof value === 'boolean' && value === false) {
       // do nothing
     } else {
-      name = __getAttributeName(name) // eslint-disable-line no-undef
-      value = __getAttributeValue(name, value, attributeNode[name]) // eslint-disable-line no-undef
+      name = __getAttributeName(name) //
+      value = __getAttributeValue(name, value, attributeNode[name]) //
 
       if (value !== undefined) {
         attributeNode[name] = value
       }
     }
+  }
+  function __addAndAttribute(object, attributeNode) {
+    Object.entries(object).forEach(([name, value]) =>
+      __addAttribute(name, value, attributeNode)
+    ) //
   }
   function __getNodeName(name) {
     return name
@@ -89,15 +77,13 @@ function __getNode(__local = {}, __option = {}) {
     return node
   }
   function __createNode(name, property, childNode, createNodeFn) {
-    name = __getNodeName(name) // eslint-disable-line no-undef
-    property = __getNodeProperty(property) // eslint-disable-line no-undef
-    childNode = __getChildNode(childNode) // eslint-disable-line no-undef
+    name = __getNodeName(name) //
+    property = __getNodeProperty(property) //
+    childNode = __getChildNode(childNode) //
 
-    return createNodeFn(name, { attributes: property }, childNode) // eslint-disable-line no-undef
+    return createNodeFn(name, { attributes: property }, childNode)
   }
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-    // FilePath = 'distributable-esmodule/library/transform.js'
     const __node = []
     var attributes = {}
     attributes.class = 'baz'
@@ -124,7 +110,5 @@ export default function (
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-  // FilePath = 'distributable-esmodule/library/transform.js'
   return __getNode(__local, __option)
 }

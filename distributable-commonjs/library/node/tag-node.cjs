@@ -40,6 +40,7 @@ class TagNode extends _node.default {
            ${blockSource}
            return __node
          })()`;
+      TagNode.__createNode.isCalled = true;
       return `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`;
     }
   }
@@ -55,7 +56,7 @@ class TagNode extends _node.default {
 
     return createNodeFn(name, {
       'attributes': property
-    }, childNode); // eslint-disable-line no-undef
+    }, childNode);
   }
   /* c8 ignore next 3 */
 

@@ -41,6 +41,8 @@ class TagNode extends Node {
            return __node
          })()`;
 
+      TagNode.__createNode.isCalled = true;
+
       return `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`;
 
     }
@@ -54,7 +56,7 @@ class TagNode extends Node {
     property = __getNodeProperty(property); // eslint-disable-line no-undef
     childNode = __getChildNode(childNode); // eslint-disable-line no-undef
 
-    return createNodeFn(name, { 'attributes': property }, childNode); // eslint-disable-line no-undef
+    return createNodeFn(name, { 'attributes': property }, childNode);
 
   }
 

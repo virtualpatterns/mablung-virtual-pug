@@ -17,77 +17,14 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj }
 }
 
+// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
+// FilePath = 'distributable-commonjs/library/transform.cjs'
 const ConvertToVirtualNode = (0, _htmlToVdom.default)({
   VNode: _vnode.default,
   VText: _vtext.default
 })
 
 function __getNode(__local = {}, __option = {}) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-  // FilePath = 'distributable-commonjs/library/transform.cjs'
-  function __forEach(value, fn) {
-    if (Array.isArray(value)) {
-      value.forEach(fn)
-      return value.length
-    } else {
-      let entry = Object.entries(value)
-      entry.forEach(([name, value]) => fn(value, name))
-      return entry.length
-    }
-  }
-
-  function __addAndAttribute(object, attributeNode) {
-    Object.entries(object).forEach(([name, value]) =>
-      __addAttribute(name, value, attributeNode)
-    ) // eslint-disable-line no-undef
-  }
-
-  function __getAttributeName(name) {
-    return name
-  }
-
-  function __getAttributeValue(name, value, currentValue) {
-    if (typeof value === 'boolean') {
-      value = value ? name : false
-    } else if (typeof value === 'string') {
-      value = currentValue ? `${currentValue} ${value}` : value
-    } else if (Array.isArray(value)) {
-      value = currentValue
-        ? `${currentValue} ${value.join(' ')}`
-        : value.join(' ')
-    } else {
-      switch (name.toUpperCase()) {
-        case 'CLASS':
-          value = Object.keys(value)
-            .filter((key) => value[key])
-            .join(' ')
-          break
-
-        case 'STYLE':
-          value = Object.keys(value)
-            .map((key) => `${key}:${value[key]};`)
-            .join('')
-          break
-      }
-    }
-
-    return value === '' ? undefined : value
-  }
-
-  function __addAttribute(name, value, attributeNode) {
-    if (typeof value === 'boolean' && value === false) {
-      // do nothing
-    } else {
-      name = __getAttributeName(name) // eslint-disable-line no-undef
-
-      value = __getAttributeValue(name, value, attributeNode[name]) // eslint-disable-line no-undef
-
-      if (value !== undefined) {
-        attributeNode[name] = value
-      }
-    }
-  }
-
   function __getNodeName(name) {
     return name
   }
@@ -112,11 +49,11 @@ function __getNode(__local = {}, __option = {}) {
   }
 
   function __createNode(name, property, childNode, createNodeFn) {
-    name = __getNodeName(name) // eslint-disable-line no-undef
+    name = __getNodeName(name) //
 
-    property = __getNodeProperty(property) // eslint-disable-line no-undef
+    property = __getNodeProperty(property) //
 
-    childNode = __getChildNode(childNode) // eslint-disable-line no-undef
+    childNode = __getChildNode(childNode) //
 
     return createNodeFn(
       name,
@@ -124,12 +61,10 @@ function __getNode(__local = {}, __option = {}) {
         attributes: property
       },
       childNode
-    ) // eslint-disable-line no-undef
+    )
   }
 
   function __getNode(__option = {}) {
-    // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-    // FilePath = 'distributable-commonjs/library/transform.cjs'
     const __node = []
 
     for (var x = 0; x < 1; x++) {
@@ -162,7 +97,5 @@ function _default(
     convertToNode: ConvertToVirtualNode
   }
 ) {
-  // Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
-  // FilePath = 'distributable-commonjs/library/transform.cjs'
   return __getNode(__local, __option)
 }

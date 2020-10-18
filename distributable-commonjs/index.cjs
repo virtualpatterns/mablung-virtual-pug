@@ -8,6 +8,7 @@ var _transform = require("./library/transform.cjs");
 
 Object.keys(_transform).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _transform[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -20,6 +21,7 @@ var _unrecognizedMessageTransformError = require("./library/error/unrecognized-m
 
 Object.keys(_unrecognizedMessageTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unrecognizedMessageTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -32,6 +34,7 @@ var _unsupportedAttributeTransformError = require("./library/error/unsupported-a
 
 Object.keys(_unsupportedAttributeTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unsupportedAttributeTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -44,6 +47,7 @@ var _unsupportedCodeTransformError = require("./library/error/unsupported-code-t
 
 Object.keys(_unsupportedCodeTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unsupportedCodeTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -56,6 +60,7 @@ var _unsupportedCommentTransformError = require("./library/error/unsupported-com
 
 Object.keys(_unsupportedCommentTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unsupportedCommentTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -68,6 +73,7 @@ var _unsupportedDoctypeTransformError = require("./library/error/unsupported-doc
 
 Object.keys(_unsupportedDoctypeTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unsupportedDoctypeTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
@@ -80,6 +86,7 @@ var _unsupportedTagTransformError = require("./library/error/unsupported-tag-tra
 
 Object.keys(_unsupportedTagTransformError).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _unsupportedTagTransformError[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {

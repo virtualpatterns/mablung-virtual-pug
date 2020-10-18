@@ -85,24 +85,72 @@ class Transform {
     // console.log('Transform.getSourceFromContent(content, option) { ... }')
     let AST = this.getASTFromContent(content, option);
     let blockNode = new _blockNode.default(AST, option);
-    let blockSource = await blockNode.getSource();
-    let source = ` function ${_eachNode.default.__forEach.toString()}
-                    function ${_andAttributeNode.default.__addAndAttribute.toString()}
-                    function ${_attributeNode.default.__getAttributeName.toString()}
-                    function ${_attributeNode.default.__getAttributeValue.toString()}
-                    function ${_attributeNode.default.__addAttribute.toString()}
-                    function ${_tagNode.default.__getNodeName.toString()}
-                    function ${_tagNode.default.__getNodeProperty.toString()}
-                    function ${_tagNode.default.__getChildNode.toString()}
-                    function ${_tagNode.default.__createNode.toString()}
-                    function __getNode(__option = {}) { 
-                      // Powered by ${_package.Package.name} v${_package.Package.version}
-                      // FilePath = '${_path.default.relative('', FilePath)}'
-                      const __node = []
-                      ${blockSource}
-                      return __node
-                    }`;
-    let local = await this._getLocalFromSource(source);
+    let blockSource = await blockNode.getSource(); // if (TagNode.__createNode.isCalled) {
+    //   source = `  ${source}
+    //               function ${TagNode.__getNodeName.toString().replace(pattern, '')}
+    //               function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
+    //               function ${TagNode.__getChildNode.toString().replace(pattern, '')}
+    //               function ${TagNode.__createNode.toString().replace(pattern, '')}`
+    // }
+    // if (AttributeNode.__addAttribute.isCalled) {
+    //   source = `  ${source}
+    //               function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
+    //               function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
+    //               function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}`
+    // }
+    // if (EachNode.__forEach.isCalled) {
+    //   source = `  ${source}
+    //               function ${EachNode.__forEach.toString().replace(pattern, '')}`
+    // }
+    // if (AndAttributeNode.__addAndAttribute.isCalled) {
+    //   source = `  ${source}
+    //               function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}`
+    // }
+
+    let source = null;
+    source = `  function __getNode(__option = {}) { 
+                  const __node = []
+                  ${blockSource}
+                  return __node
+                }`;
+    let local = null;
+    let countOfLocal = null;
+    let pattern = /eslint-disable-line no-undef/gi;
+
+    do {
+      local = await this._getLocalFromSource(source);
+      countOfLocal = local.length;
+
+      if (local.includes('__createNode')) {
+        source = `  function ${_tagNode.default.__getNodeName.toString().replace(pattern, '')}
+                    function ${_tagNode.default.__getNodeProperty.toString().replace(pattern, '')}
+                    function ${_tagNode.default.__getChildNode.toString().replace(pattern, '')}
+                    function ${_tagNode.default.__createNode.toString().replace(pattern, '')}
+                    ${source}`;
+        local = local.filter(local => local !== '__createNode');
+      }
+
+      if (local.includes('__addAttribute')) {
+        source = `  function ${_attributeNode.default.__getAttributeName.toString().replace(pattern, '')}
+                    function ${_attributeNode.default.__getAttributeValue.toString().replace(pattern, '')}
+                    function ${_attributeNode.default.__addAttribute.toString().replace(pattern, '')}
+                    ${source}`;
+        local = local.filter(local => local !== '__addAttribute');
+      }
+
+      if (local.includes('__forEach')) {
+        source = `  function ${_eachNode.default.__forEach.toString().replace(pattern, '')}
+                    ${source}`;
+        local = local.filter(local => local !== '__forEach');
+      }
+
+      if (local.includes('__addAndAttribute')) {
+        source = `  function ${_andAttributeNode.default.__addAndAttribute.toString().replace(pattern, '')}
+                    ${source}`;
+        local = local.filter(local => local !== '__addAndAttribute');
+      }
+    } while (local.length < countOfLocal);
+
     return {
       source,
       local
@@ -119,8 +167,6 @@ class Transform {
     } = await this.getSourceFromContent(content, option);
     local = local.map(local => `const { ${local} } = __local`).join('\n');
     source = ` function __getNode(__local = {}, __option = {}) {
-                  // Powered by ${_package.Package.name} v${_package.Package.version}
-                  // FilePath = '${_path.default.relative('', FilePath)}'
                   ${local}
                   ${source} 
                   return __getNode(__option) 
@@ -146,15 +192,15 @@ class Transform {
     // console.log('Transform.getModuleSourceFromContent(content, option) { ... }')
     let source = null;
     source = await this.getFunctionSourceFromContent(content, option);
-    source = ` import CreateVirtualNode from 'virtual-dom/h.js'
+    source = ` // Powered by ${_package.Package.name} v${_package.Package.version}
+                // FilePath = '${_path.default.relative('', FilePath)}'
+                import CreateVirtualNode from 'virtual-dom/h.js'
                 import _ConvertToVirtualNode from 'html-to-vdom'
                 import VirtualNode from 'virtual-dom/vnode/vnode.js'
                 import VirtualText from 'virtual-dom/vnode/vtext.js'
                 const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
                 ${source}
                 export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  // Powered by ${_package.Package.name} v${_package.Package.version}
-                  // FilePath = '${_path.default.relative('', FilePath)}'
                   return __getNode(__local, __option) 
                 }`;
     return source;
