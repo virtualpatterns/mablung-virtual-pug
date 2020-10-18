@@ -41,8 +41,6 @@ class TagNode extends Node {
            return __node
          })()`
 
-      TagNode.__createNode.isCalled = true
-
       return  `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`
 
     }

@@ -48,40 +48,15 @@ class Transform {
     let blockNode = new BlockNode(AST, option)
     let blockSource = await blockNode.getSource()
 
-    // if (TagNode.__createNode.isCalled) {
-    //   source = `  ${source}
-    //               function ${TagNode.__getNodeName.toString().replace(pattern, '')}
-    //               function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
-    //               function ${TagNode.__getChildNode.toString().replace(pattern, '')}
-    //               function ${TagNode.__createNode.toString().replace(pattern, '')}`
-    // }
-
-    // if (AttributeNode.__addAttribute.isCalled) {
-    //   source = `  ${source}
-    //               function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
-    //               function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
-    //               function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}`
-    // }
-
-    // if (EachNode.__forEach.isCalled) {
-    //   source = `  ${source}
-    //               function ${EachNode.__forEach.toString().replace(pattern, '')}`
-    // }
-
-    // if (AndAttributeNode.__addAndAttribute.isCalled) {
-    //   source = `  ${source}
-    //               function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}`
-    // }
-
-    let source = null
-    source = `  function __getNode(__option = {}) { 
-                  const __node = []
-                  ${blockSource}
-                  return __node
-                }`
+    let source = `  function __getNode(__option = {}) { 
+                      const __node = []
+                      ${blockSource}
+                      return __node
+                    }`
 
     let local = null
     let countOfLocal = null
+    
     let pattern = /eslint-disable-line no-undef/gi
 
     do {
