@@ -15,8 +15,6 @@ class EachNode extends Node {
     let blockNode = new BlockNode(this._node.block, this._option);
     let blockSource = blockNode.isEmpty ? '' : await blockNode.getSource();
 
-    EachNode.__forEach.isCalled = true;
-
     source = ` __forEach(${this._node.obj}, (${this._node.val}${this._node.key ? `, ${this._node.key}` : ''}) => { 
                   ${blockSource}
                 })`;

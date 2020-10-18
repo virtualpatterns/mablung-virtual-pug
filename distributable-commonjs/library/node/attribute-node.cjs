@@ -21,7 +21,6 @@ class AttributeNode extends _node.default {
     if (this._attribute.mustEscape) {
       throw new _unsupportedAttributeTransformError.UnsupportedAttributeTransformError(this._attribute);
     } else {
-      AttributeNode.__addAttribute.isCalled = true;
       return `__addAttribute('${this._attribute.name}', ${this._attribute.val}, __attributeNode)`;
     }
   }
