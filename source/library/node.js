@@ -27,22 +27,6 @@ class Node {
 
   }
 
-  // static __escape(value) {
-
-  //   if (typeof value === 'string') {
-      
-  //     value = value.replace(/"/gi, '&quot;')
-  //     value = value.replace(/'/gi, '&#39;')
-  //     value = value.replace(/&/gi, '&amp;')
-  //     value = value.replace(/</gi, '&lt;')
-  //     value = value.replace(/>/gi, '&gt;')
-  
-  //   }
-
-  //   return value
-
-  // }
-
 }
 
 export default Node

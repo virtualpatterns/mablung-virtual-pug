@@ -1,5 +1,6 @@
 .DS_Store
 /.cache
-/distributable/sandbox
+/distributable-commonjs/sandbox
+/distributable-esmodule/sandbox
 /node_modules
 /process

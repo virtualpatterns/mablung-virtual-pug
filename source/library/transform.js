@@ -1,12 +1,13 @@
 import DefaultBabel, * as ModuleBabel from '@babel/core'
 import ESLint from 'eslint'
 import FileSystem from 'fs-extra'
-import BaseFormat from 'prettier'
+import _Format from 'prettier'
 import Is from '@pwn/is'
 import JSON5 from 'json5'
 import Lex from 'pug-lexer'
 import Link from 'pug-linker'
 import Load from 'pug-load'
+import Match from 'minimatch'
 import Parse from 'pug-parser'
 import Path from 'path'
 // import URL from 'url'
@@ -23,7 +24,7 @@ import { UnrecognizedMessageTransformError } from './error/unrecognized-message-
 const Babel = DefaultBabel || ModuleBabel
 const { ESLint: Lint } = ESLint
 const FilePath = __filePath
-const { format: Format } = BaseFormat
+const { format: Format } = _Format
 const Require = __require
 
 class Transform {
@@ -47,24 +48,93 @@ class Transform {
     let blockNode = new BlockNode(AST, option)
     let blockSource = await blockNode.getSource()
 
-    let source =  ` function ${EachNode.__forEach.toString()}
-                    function ${AndAttributeNode.__addAndAttribute.toString()}
-                    function ${AttributeNode.__getAttributeName.toString()}
-                    function ${AttributeNode.__getAttributeValue.toString()}
-                    function ${AttributeNode.__addAttribute.toString()}
-                    function ${TagNode.__getNodeName.toString()}
-                    function ${TagNode.__getNodeProperty.toString()}
-                    function ${TagNode.__getChildNode.toString()}
-                    function ${TagNode.__createNode.toString()}
-                    function __getNode(__option = {}) { 
-                      // Powered by ${Package.name} v${Package.version}
-                      // FilePath = '${Path.relative('', FilePath)}'
-                      const __node = []
-                      ${blockSource}
-                      return __node
-                    }`
+    // if (TagNode.__createNode.isCalled) {
+    //   source = `  ${source}
+    //               function ${TagNode.__getNodeName.toString().replace(pattern, '')}
+    //               function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
+    //               function ${TagNode.__getChildNode.toString().replace(pattern, '')}
+    //               function ${TagNode.__createNode.toString().replace(pattern, '')}`
+    // }
 
-    let local = await this._getLocalFromSource(source)
+    // if (AttributeNode.__addAttribute.isCalled) {
+    //   source = `  ${source}
+    //               function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
+    //               function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
+    //               function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}`
+    // }
+
+    // if (EachNode.__forEach.isCalled) {
+    //   source = `  ${source}
+    //               function ${EachNode.__forEach.toString().replace(pattern, '')}`
+    // }
+
+    // if (AndAttributeNode.__addAndAttribute.isCalled) {
+    //   source = `  ${source}
+    //               function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}`
+    // }
+
+    let source = null
+    source = `  function __getNode(__option = {}) { 
+                  const __node = []
+                  ${blockSource}
+                  return __node
+                }`
+
+    let local = null
+    let countOfLocal = null
+    let pattern = /eslint-disable-line no-undef/gi
+
+    do {
+
+      local = await this._getLocalFromSource(source)
+      countOfLocal = local.length
+
+      if (local.includes('__createNode')) {
+
+        source = `  function ${TagNode.__getNodeName.toString().replace(pattern, '')}
+                    function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
+                    function ${TagNode.__getChildNode.toString().replace(pattern, '')}
+                    function ${TagNode.__createNode.toString().replace(pattern, '')}
+                    ${source}`
+  
+        local = local
+          .filter((local) => local !== '__createNode')
+  
+      }
+  
+      if (local.includes('__addAttribute')) {
+  
+        source = `  function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
+                    function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
+                    function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}
+                    ${source}`
+  
+        local = local
+          .filter((local) => local !== '__addAttribute')
+  
+      }
+  
+      if (local.includes('__forEach')) {
+  
+        source = `  function ${EachNode.__forEach.toString().replace(pattern, '')}
+                    ${source}`
+  
+        local = local
+          .filter((local) => local !== '__forEach')
+  
+      }
+  
+      if (local.includes('__addAndAttribute')) {
+  
+        source = `  function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}
+                    ${source}`
+  
+        local = local
+          .filter((local) => local !== '__addAndAttribute')
+  
+      }
+  
+    } while (local.length < countOfLocal)
 
     return { source, local }
 
@@ -80,8 +150,6 @@ class Transform {
       .join('\n')
 
     source =  ` function __getNode(__local = {}, __option = {}) {
-                  // Powered by ${Package.name} v${Package.version}
-                  // FilePath = '${Path.relative('', FilePath)}'
                   ${local}
                   ${source} 
                   return __getNode(__option) 
@@ -110,15 +178,15 @@ class Transform {
 
     let source = null
     source = await this.getFunctionSourceFromContent(content, option)
-    source =  ` import CreateVirtualNode from 'virtual-dom/h.js'
+    source =  ` // Powered by ${Package.name} v${Package.version}
+                // FilePath = '${Path.relative('', FilePath)}'
+                import CreateVirtualNode from 'virtual-dom/h.js'
                 import _ConvertToVirtualNode from 'html-to-vdom'
                 import VirtualNode from 'virtual-dom/vnode/vnode.js'
                 import VirtualText from 'virtual-dom/vnode/vtext.js'
                 const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
                 ${source}
                 export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  // Powered by ${Package.name} v${Package.version}
-                  // FilePath = '${Path.relative('', FilePath)}'
                   return __getNode(__local, __option) 
                 }`
 
@@ -176,19 +244,61 @@ class Transform {
 
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = `${sourcePath}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}') { ... }`)
+  static async createModuleFromPath(sourcePath, targetPath = FileSystem.statSync(sourcePath).isDirectory() ? sourcePath : `${Path.dirname(sourcePath)}/${Path.basename(sourcePath, Path.extname(sourcePath))}${Path.extname(FilePath)}`, option = { 'encoding': 'utf-8', 'flag': 'wx' }) {
+    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}', '${Path.relative('', targetPath)}', option) { ... }`)
 
-    let source = null
-    source = await this.getModuleSourceFromPath(sourcePath)
-    source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule')
+    let sourceInformation = await FileSystem.stat(sourcePath)
 
-    await FileSystem.writeFile(targetPath, source, option)
+    if (sourceInformation.isDirectory()) {
+  
+      let includePattern = [ '*.pug' ]
+      let excludePattern = [ '*.skip.pug' ]
 
-    // __transformPath does ...
-    //   URL.pathToFileURL if the environment is ESModule
-    //   require.resolve if the environment is CommonJS
-    // return import(__transformPath(targetPath))
+      let item = await FileSystem.readdir(sourcePath, { 'encoding': 'utf-8', 'withFileTypes': true })
+  
+      let createModule = []
+  
+      createModule = createModule.concat(item
+        .filter((item) => item.isDirectory())
+        .map((folder) => this.createModuleFromPath(`${sourcePath}/${folder.name}`, `${targetPath}/${folder.name}`, option)))
+  
+      createModule = createModule.concat(item
+        .filter((item) => item.isFile())
+        .filter((file) => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false))
+        .filter((file) => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false))
+        .map((file) => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${Path.basename(file.name, Path.extname(file.name))}${Path.extname(FilePath)}`), option))
+    
+      return Promise.all(createModule)
+        
+    } else {
+
+      let isCreated = false
+
+      if (await FileSystem.pathExists(targetPath)) {
+
+        let targetInformation = await FileSystem.stat(targetPath)
+
+        if (sourceInformation.mtime > targetInformation.mtime) {
+          isCreated = true
+        }
+
+      } else {
+        isCreated = true
+      }
+
+      if (isCreated) {
+
+        let source = null
+        source = await this.getModuleSourceFromPath(sourcePath)
+        source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule')
+
+        await FileSystem.ensureDir(Path.dirname(targetPath))
+        // console.log(`await FileSystem.writeFile('${Path.relative('', targetPath)}', source, option)`)
+        return FileSystem.writeFile(targetPath, source, option)
+    
+      }
+
+    }
 
   }
 

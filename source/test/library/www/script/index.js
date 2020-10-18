@@ -2,7 +2,7 @@ import Create from 'virtual-dom/create-element.js'
 import Diff from 'virtual-dom/diff.js'
 import Patch from 'virtual-dom/patch.js'
 
-import VirtualContentFn from './element.pug.js'
+import VirtualContentFn from './element.js'
 
 let virtualContent = VirtualContentFn({ 'list': [ 'a', 'b', 'c' ] })[0]
 let realContent = Create(virtualContent)
