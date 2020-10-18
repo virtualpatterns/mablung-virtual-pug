@@ -1,4 +1,4 @@
-// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
+// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-12
 // FilePath = 'distributable-esmodule/library/transform.js'
 import CreateVirtualNode from 'virtual-dom/h.js'
 import _ConvertToVirtualNode from 'html-to-vdom'

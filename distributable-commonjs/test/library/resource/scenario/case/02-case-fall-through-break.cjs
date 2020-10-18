@@ -17,7 +17,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj }
 }
 
-// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-11
+// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-12
 // FilePath = 'distributable-commonjs/library/transform.cjs'
 const ConvertToVirtualNode = (0, _htmlToVdom.default)({
   VNode: _vnode.default,
