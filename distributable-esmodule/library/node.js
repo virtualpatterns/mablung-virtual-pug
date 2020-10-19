@@ -2,7 +2,7 @@ import _URL from "url";import DefaultChangeCase, * as ModuleChangeCase from 'cha
 import Path from 'path';
 
 const FilePath = _URL.fileURLToPath(import.meta.url);
-const { paramCase: ParameterCase } = DefaultChangeCase || ModuleChangeCase;
+const { 'paramCase': ParameterCase } = DefaultChangeCase || ModuleChangeCase;
 
 class Node {
 

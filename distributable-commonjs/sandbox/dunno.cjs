@@ -24,27 +24,28 @@ const ConvertToNode = (0, _htmlToVdom.default)({
   'VText': _vtext.default
 });
 const {
-  format: FormatJS
+  'format': FormatJS
 } = _prettier.default;
 const Require = require;
 
 async function main() {
   try {
-    let path = Require.resolve('./dunno.pug');
+    let path = Require.resolve('./dunno-content.pug');
     let AST = await _transform.Transform.getASTFromPath(path);
     console.log('-'.repeat(80));
     console.log('Transform.getASTFromPath(path)');
     console.log('-'.repeat(80));
     console.dir(AST, {
       'depth': null
-    }); // let source = await Transform.getFunctionSourceFromPath(path)
-    // console.log('-'.repeat(80))
-    // console.log('Transform.getFunctionSourceFromPath(path)')
-    // console.log('-'.repeat(80))
-    // console.log(source)
-
+    });
+    let source = null;
+    source = await _transform.Transform.getFunctionSourceFromPath(path);
+    console.log('-'.repeat(80));
+    console.log('Transform.getFunctionSourceFromPath(path)');
+    console.log('-'.repeat(80));
+    console.log(source);
     let virtualFn = await _transform.Transform.getFunctionFromPath(path);
-    let source = virtualFn.toString();
+    source = virtualFn.toString();
     console.log('-'.repeat(80));
     console.log('Transform.getFunctionFromPath(path)');
     console.log('-'.repeat(80));

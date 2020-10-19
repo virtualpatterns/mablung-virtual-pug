@@ -18,9 +18,9 @@ class TextNode extends _node.default {
 
   getSource() {
     if (this._node.val === '') {
-      return '__node.push(...[__option.convertToNode(\' \')].flat())';
+      return '__node.push(...[__utility.convertToNode(\' \')].flat())';
     } else {
-      return `__node.push(...[__option.convertToNode('${(0, _jsesc.default)(this._node.val)}')].flat())`;
+      return `__node.push(...[__utility.convertToNode('${(0, _jsesc.default)(this._node.val)}')].flat())`;
     }
   }
 

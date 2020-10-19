@@ -15,9 +15,9 @@
       "sourceType": "unambiguous"
     },
     "esmodule": {
-      "retainLines": true,
       "plugins": [],
       "presets": [],
+      "retainLines": true,
       "sourceType": "unambiguous"
     },
   }

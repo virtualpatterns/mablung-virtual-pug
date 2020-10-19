@@ -41,7 +41,8 @@ class TagNode extends Node {
            return __node
          })()`;
 
-      return `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`;
+      // return  `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`
+      return `__node.push(__utility.createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}))`;
 
     }
 

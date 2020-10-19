@@ -20,7 +20,7 @@ class EachNode extends _node.default {
     let source = null;
     let blockNode = new _blockNode.default(this._node.block, this._option);
     let blockSource = blockNode.isEmpty ? '' : await blockNode.getSource();
-    source = ` __forEach(${this._node.obj}, (${this._node.val}${this._node.key ? `, ${this._node.key}` : ''}) => { 
+    source = ` __utility.forEach(${this._node.obj}, (${this._node.val}${this._node.key ? `, ${this._node.key}` : ''}) => { 
                   ${blockSource}
                 })`;
 

@@ -14,7 +14,7 @@ console.dir(ChangeCase1.default);
 console.dir(ChangeCase1);
 const Babel = ModuleBabel.default || ModuleBabel;
 const {
-  paramCase: ParameterCase
+  'paramCase': ParameterCase
 } = ChangeCase1.default || ChangeCase1;
 console.log(`ParameterCase('AWalkInThePark') = ${ParameterCase('AWalkInThePark')}`);
 debugger; // for cjs ...

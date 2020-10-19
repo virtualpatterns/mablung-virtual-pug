@@ -29,17 +29,9 @@ var _pugParser = _interopRequireDefault(require("pug-parser"));
 
 var _path = _interopRequireDefault(require("path"));
 
-var _andAttributeNode = _interopRequireDefault(require("./node/and-attribute-node.cjs"));
-
-var _attributeNode = _interopRequireDefault(require("./node/attribute-node.cjs"));
+var _package = require("./package.cjs");
 
 var _blockNode = _interopRequireDefault(require("./node/block-node.cjs"));
-
-var _eachNode = _interopRequireDefault(require("./node/each-node.cjs"));
-
-var _tagNode = _interopRequireDefault(require("./node/tag-node.cjs"));
-
-var _package = require("./package.cjs");
 
 var _unrecognizedMessageTransformError = require("./error/unrecognized-message-transform-error.cjs");
 
@@ -49,15 +41,14 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-// import URL from 'url'
-const Babel = ModuleBabel.default || ModuleBabel;
 const {
-  ESLint: Lint
+  'ESLint': Lint
 } = _eslint.default;
-const FilePath = __filename;
 const {
-  format: Format
+  'format': Format
 } = _prettier.default;
+const Babel = ModuleBabel.default || ModuleBabel;
+const FilePath = __filename;
 const Require = require;
 
 class Transform {
@@ -86,48 +77,47 @@ class Transform {
     let AST = this.getASTFromContent(content, option);
     let blockNode = new _blockNode.default(AST, option);
     let blockSource = await blockNode.getSource();
-    let source = `  function __getNode(__option = {}) { 
+    let source = `  function __getNode(__utility = {}) { 
                       const __node = []
                       ${blockSource}
                       return __node
                     }`;
-    let local = null;
-    let countOfLocal = null;
-    let pattern = /eslint-disable-line no-undef/gi;
-
-    do {
-      local = await this._getLocalFromSource(source);
-      countOfLocal = local.length;
-
-      if (local.includes('__createNode')) {
-        source = `  function ${_tagNode.default.__getNodeName.toString().replace(pattern, '')}
-                    function ${_tagNode.default.__getNodeProperty.toString().replace(pattern, '')}
-                    function ${_tagNode.default.__getChildNode.toString().replace(pattern, '')}
-                    function ${_tagNode.default.__createNode.toString().replace(pattern, '')}
-                    ${source}`;
-        local = local.filter(local => local !== '__createNode');
-      }
-
-      if (local.includes('__addAttribute')) {
-        source = `  function ${_attributeNode.default.__getAttributeName.toString().replace(pattern, '')}
-                    function ${_attributeNode.default.__getAttributeValue.toString().replace(pattern, '')}
-                    function ${_attributeNode.default.__addAttribute.toString().replace(pattern, '')}
-                    ${source}`;
-        local = local.filter(local => local !== '__addAttribute');
-      }
-
-      if (local.includes('__forEach')) {
-        source = `  function ${_eachNode.default.__forEach.toString().replace(pattern, '')}
-                    ${source}`;
-        local = local.filter(local => local !== '__forEach');
-      }
-
-      if (local.includes('__addAndAttribute')) {
-        source = `  function ${_andAttributeNode.default.__addAndAttribute.toString().replace(pattern, '')}
-                    ${source}`;
-        local = local.filter(local => local !== '__addAndAttribute');
-      }
-    } while (local.length < countOfLocal);
+    let local = await this._getLocalFromSource(source); // let local = null
+    // let countOfLocal = null
+    // let pattern = /eslint-disable-line no-undef/gi
+    // do {
+    //   local = await this._getLocalFromSource(source)
+    //   countOfLocal = local.length
+    //   if (local.includes('__createNode')) {
+    //     source = `  function ${TagNode.__getNodeName.toString().replace(pattern, '')}
+    //                 function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
+    //                 function ${TagNode.__getChildNode.toString().replace(pattern, '')}
+    //                 function ${TagNode.__createNode.toString().replace(pattern, '')}
+    //                 ${source}`
+    //     local = local
+    //       .filter((local) => local !== '__createNode')
+    //   }
+    //   if (local.includes('__addAttribute')) {
+    //     source = `  function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
+    //                 function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
+    //                 function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}
+    //                 ${source}`
+    //     local = local
+    //       .filter((local) => local !== '__addAttribute')
+    //   }
+    //   if (local.includes('__forEach')) {
+    //     source = `  function ${EachNode.__forEach.toString().replace(pattern, '')}
+    //                 ${source}`
+    //     local = local
+    //       .filter((local) => local !== '__forEach')
+    //   }
+    //   if (local.includes('__addAndAttribute')) {
+    //     source = `  function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}
+    //                 ${source}`
+    //     local = local
+    //       .filter((local) => local !== '__addAndAttribute')
+    //   }
+    // } while (local.length < countOfLocal)
 
     return {
       source,
@@ -144,10 +134,10 @@ class Transform {
       local
     } = await this.getSourceFromContent(content, option);
     local = local.map(local => `const { ${local} } = __local`).join('\n');
-    source = ` function __getNode(__local = {}, __option = {}) {
+    source = ` function __getNode(__local = {}, __utility = {}) {
                   ${local}
                   ${source} 
-                  return __getNode(__option) 
+                  return __getNode(__utility) 
                 }`;
     return source;
   }
@@ -170,16 +160,13 @@ class Transform {
     // console.log('Transform.getModuleSourceFromContent(content, option) { ... }')
     let source = null;
     source = await this.getFunctionSourceFromContent(content, option);
-    source = ` // Powered by ${_package.Package.name} v${_package.Package.version}
+    source = ` // Created by ${_package.Package.name} v${_package.Package.version}
                 // FilePath = '${_path.default.relative('', FilePath)}'
-                import CreateVirtualNode from 'virtual-dom/h.js'
-                import _ConvertToVirtualNode from 'html-to-vdom'
-                import VirtualNode from 'virtual-dom/vnode/vnode.js'
-                import VirtualText from 'virtual-dom/vnode/vtext.js'
-                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+                // Path = '${option.path === '(anonymous)' ? '(anonymous)' : _path.default.relative('', option.path)}'
+                import { Utility } from '@virtualpatterns/mablung-virtual-pug'
                 ${source}
-                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  return __getNode(__local, __option) 
+                export default function(__local = {}, __utility = Utility) { 
+                  return __getNode(__local, __utility) 
                 }`;
     return source;
   }
@@ -281,20 +268,20 @@ class Transform {
     }
   }
 
-  static async formatSource(source, environment = _path.default.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
+  static async formatSource(sourceIn, environment = _path.default.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
     let configuration = null;
     configuration = _json.default.parse(await _fsExtra.default.readFile(Require.resolve('./transform.babelrc.json')), {
       'encoding': 'utf-8'
     });
     configuration = configuration.env[environment];
     let {
-      code: sourceOut
-    } = await Babel.transformAsync(source, configuration);
+      'code': sourceOut
+    } = await Babel.transformAsync(sourceIn, configuration);
     sourceOut = Format(sourceOut, {
       'arrowParens': 'always',
       'bracketSpacing': true,
       'parser': 'babel',
-      'quoteProps': 'consistent',
+      'quoteProps': 'preserve',
       'semi': false,
       'singleQuote': true,
       'tabWidth': 2,

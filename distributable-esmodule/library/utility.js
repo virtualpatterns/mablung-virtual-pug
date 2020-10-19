@@ -1,0 +1,142 @@
+import _ConvertToVirtualNode from 'html-to-vdom';
+import CreateVirtualNode from 'virtual-dom/h.js';
+import VirtualNode from 'virtual-dom/vnode/vnode.js';
+import VirtualText from 'virtual-dom/vnode/vtext.js';
+
+const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText });
+
+class Utility {
+
+  /* c8 ignore next 3 */
+  static convertToNode(...parameter) {
+    return ConvertToVirtualNode(...parameter);
+  }
+
+  // AndAttributeNode
+  /* c8 ignore next 3 */
+  static addAndAttribute(object, attributeNode) {
+    Object.entries(object).forEach(([name, value]) => this.addAttribute(name, value, attributeNode));
+  }
+
+  // AttributeNode
+  /* c8 ignore next 15 */
+  static addAttribute(name, value, attributeNode) {
+
+    if (typeof value === 'boolean' &&
+    value === false) {
+      // do nothing
+    } else {
+
+      name = this.getAttributeName(name);
+      value = this.getAttributeValue(name, value, attributeNode[name]);
+
+      if (value !== undefined) {
+        attributeNode[name] = value;
+      }
+
+    }
+
+  }
+
+  /* c8 ignore next 9 */
+  static getAttributeName(name) {
+    return name;
+  }
+
+  /* c8 ignore next 28 */
+  static getAttributeValue(name, value, currentValue) {
+
+    if (typeof value === 'boolean') {
+      value = value ? name : false;
+    } else if (typeof value === 'string') {
+      value = currentValue ? `${currentValue} ${value}` : value;
+    } else if (Array.isArray(value)) {
+      value = currentValue ? `${currentValue} ${value.join(' ')}` : value.join(' ');
+    } else {
+
+      switch (name.toUpperCase()) {
+        case 'CLASS':
+          value = Object.keys(value).
+          filter(key => value[key]).
+          join(' ');
+          break;
+        case 'STYLE':
+          value = Object.keys(value).
+          map(key => `${key}:${value[key]};`).
+          join('');
+          break;}
+
+
+    }
+
+    return value === '' ? undefined : value;
+
+  }
+
+  // EachNode
+  /* c8 ignore next 17 */
+  static forEach(value, fn) {
+
+    if (Array.isArray(value)) {
+
+      value.forEach(fn);
+      return value.length;
+
+    } else {
+
+      let entry = Object.entries(value);
+
+      entry.forEach(([name, value]) => fn(value, name));
+      return entry.length;
+
+    }
+
+  }
+
+  // TagNode
+  /* c8 ignore next 9 */
+  static createNode(name, property, childNode) {
+
+    name = this.getNodeName(name);
+    property = this.getNodeProperty(property);
+    childNode = this.getChildNode(childNode);
+
+    return CreateVirtualNode(name, { 'attributes': property }, childNode);
+
+  }
+
+  /* c8 ignore next 3 */
+  static getNodeName(name) {
+    return name;
+  }
+
+  /* c8 ignore next 17 */
+  static getNodeProperty(property) {
+
+    let map = {}; // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
+    let entry = Object.entries(property);
+
+    entry.
+    sort(([leftName], [rightName]) => leftName.localeCompare(rightName)).
+    forEach(([name, value]) => {
+
+      if (name.toUpperCase() in map) {
+        delete property[name];
+        property[map[name.toUpperCase()] || name] = value;
+      }
+
+    });
+
+    return property;
+
+  }
+
+  /* c8 ignore next 3 */
+  static getChildNode(node) {
+    return node;
+  }}
+
+
+
+export { Utility };
+//# sourceMappingURL=utility.js.map

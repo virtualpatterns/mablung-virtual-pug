@@ -7,7 +7,7 @@ console.dir(ChangeCase0);
 console.dir(ChangeCase1);
 
 const Babel = DefaultBabel || ModuleBabel;
-const { paramCase: ParameterCase } = ChangeCase0 || ChangeCase1;
+const { 'paramCase': ParameterCase } = ChangeCase0 || ChangeCase1;
 
 console.log(`ParameterCase('AWalkInThePark') = ${ParameterCase('AWalkInThePark')}`);
 

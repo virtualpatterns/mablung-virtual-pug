@@ -11,14 +11,14 @@ import VirtualText from 'virtual-dom/vnode/vtext.js';
 import { Transform } from '../library/transform.js';
 
 const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText });
-const { format: FormatJS } = _FormatJS;
+const { 'format': FormatJS } = _FormatJS;
 const Require = _createRequire(import.meta.url);
 
 async function main() {
 
   try {
 
-    let path = Require.resolve('./dunno.pug');
+    let path = Require.resolve('./dunno-content.pug');
     let AST = await Transform.getASTFromPath(path);
 
     console.log('-'.repeat(80));
@@ -26,16 +26,17 @@ async function main() {
     console.log('-'.repeat(80));
     console.dir(AST, { 'depth': null });
 
-    // let source = await Transform.getFunctionSourceFromPath(path)
+    let source = null;
+    source = await Transform.getFunctionSourceFromPath(path);
 
-    // console.log('-'.repeat(80))
-    // console.log('Transform.getFunctionSourceFromPath(path)')
-    // console.log('-'.repeat(80))
-    // console.log(source)
+    console.log('-'.repeat(80));
+    console.log('Transform.getFunctionSourceFromPath(path)');
+    console.log('-'.repeat(80));
+    console.log(source);
 
     let virtualFn = await Transform.getFunctionFromPath(path);
 
-    let source = virtualFn.toString();
+    source = virtualFn.toString();
 
     console.log('-'.repeat(80));
     console.log('Transform.getFunctionFromPath(path)');

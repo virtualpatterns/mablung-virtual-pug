@@ -17,6 +17,19 @@ Object.keys(_transform).forEach(function (key) {
   });
 });
 
+var _utility = require("./library/utility.cjs");
+
+Object.keys(_utility).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _utility[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _utility[key];
+    }
+  });
+});
+
 var _unrecognizedMessageTransformError = require("./library/error/unrecognized-message-transform-error.cjs");
 
 Object.keys(_unrecognizedMessageTransformError).forEach(function (key) {

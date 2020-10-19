@@ -10,21 +10,16 @@ import Load from 'pug-load';
 import Match from 'minimatch';
 import Parse from 'pug-parser';
 import Path from 'path';
-// import URL from 'url'
 
-import AndAttributeNode from './node/and-attribute-node.js';
-import AttributeNode from './node/attribute-node.js';
-import BlockNode from './node/block-node.js';
-import EachNode from './node/each-node.js';
-import TagNode from './node/tag-node.js';
 import { Package } from './package.js';
+import BlockNode from './node/block-node.js';
 
 import { UnrecognizedMessageTransformError } from './error/unrecognized-message-transform-error.js';
 
+const { 'ESLint': Lint } = ESLint;
+const { 'format': Format } = _Format;
 const Babel = DefaultBabel || ModuleBabel;
-const { ESLint: Lint } = ESLint;
 const FilePath = _URL.fileURLToPath(import.meta.url);
-const { format: Format } = _Format;
 const Require = _createRequire(import.meta.url);
 
 class Transform {
@@ -48,68 +43,70 @@ class Transform {
     let blockNode = new BlockNode(AST, option);
     let blockSource = await blockNode.getSource();
 
-    let source = `  function __getNode(__option = {}) { 
+    let source = `  function __getNode(__utility = {}) { 
                       const __node = []
                       ${blockSource}
                       return __node
                     }`;
 
-    let local = null;
-    let countOfLocal = null;
+    let local = await this._getLocalFromSource(source);
 
-    let pattern = /eslint-disable-line no-undef/gi;
+    // let local = null
+    // let countOfLocal = null
 
-    do {
+    // let pattern = /eslint-disable-line no-undef/gi
 
-      local = await this._getLocalFromSource(source);
-      countOfLocal = local.length;
+    // do {
 
-      if (local.includes('__createNode')) {
+    //   local = await this._getLocalFromSource(source)
+    //   countOfLocal = local.length
 
-        source = `  function ${TagNode.__getNodeName.toString().replace(pattern, '')}
-                    function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
-                    function ${TagNode.__getChildNode.toString().replace(pattern, '')}
-                    function ${TagNode.__createNode.toString().replace(pattern, '')}
-                    ${source}`;
+    //   if (local.includes('__createNode')) {
 
-        local = local.
-        filter(local => local !== '__createNode');
+    //     source = `  function ${TagNode.__getNodeName.toString().replace(pattern, '')}
+    //                 function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
+    //                 function ${TagNode.__getChildNode.toString().replace(pattern, '')}
+    //                 function ${TagNode.__createNode.toString().replace(pattern, '')}
+    //                 ${source}`
 
-      }
+    //     local = local
+    //       .filter((local) => local !== '__createNode')
 
-      if (local.includes('__addAttribute')) {
+    //   }
 
-        source = `  function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
-                    function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
-                    function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}
-                    ${source}`;
+    //   if (local.includes('__addAttribute')) {
 
-        local = local.
-        filter(local => local !== '__addAttribute');
+    //     source = `  function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
+    //                 function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
+    //                 function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}
+    //                 ${source}`
 
-      }
+    //     local = local
+    //       .filter((local) => local !== '__addAttribute')
 
-      if (local.includes('__forEach')) {
+    //   }
 
-        source = `  function ${EachNode.__forEach.toString().replace(pattern, '')}
-                    ${source}`;
+    //   if (local.includes('__forEach')) {
 
-        local = local.
-        filter(local => local !== '__forEach');
+    //     source = `  function ${EachNode.__forEach.toString().replace(pattern, '')}
+    //                 ${source}`
 
-      }
+    //     local = local
+    //       .filter((local) => local !== '__forEach')
 
-      if (local.includes('__addAndAttribute')) {
+    //   }
 
-        source = `  function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}
-                    ${source}`;
+    //   if (local.includes('__addAndAttribute')) {
 
-        local = local.
-        filter(local => local !== '__addAndAttribute');
+    //     source = `  function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}
+    //                 ${source}`
 
-      }
+    //     local = local
+    //       .filter((local) => local !== '__addAndAttribute')
 
-    } while (local.length < countOfLocal);
+    //   }
+
+    // } while (local.length < countOfLocal)
 
     return { source, local };
 
@@ -124,10 +121,10 @@ class Transform {
     map(local => `const { ${local} } = __local`).
     join('\n');
 
-    source = ` function __getNode(__local = {}, __option = {}) {
+    source = ` function __getNode(__local = {}, __utility = {}) {
                   ${local}
                   ${source} 
-                  return __getNode(__option) 
+                  return __getNode(__utility) 
                 }`;
 
     return source;
@@ -153,16 +150,13 @@ class Transform {
 
     let source = null;
     source = await this.getFunctionSourceFromContent(content, option);
-    source = ` // Powered by ${Package.name} v${Package.version}
+    source = ` // Created by ${Package.name} v${Package.version}
                 // FilePath = '${Path.relative('', FilePath)}'
-                import CreateVirtualNode from 'virtual-dom/h.js'
-                import _ConvertToVirtualNode from 'html-to-vdom'
-                import VirtualNode from 'virtual-dom/vnode/vnode.js'
-                import VirtualText from 'virtual-dom/vnode/vtext.js'
-                const ConvertToVirtualNode = _ConvertToVirtualNode({ 'VNode': VirtualNode, 'VText': VirtualText })
+                // Path = '${option.path === '(anonymous)' ? '(anonymous)' : Path.relative('', option.path)}'
+                import { Utility } from '@virtualpatterns/mablung-virtual-pug'
                 ${source}
-                export default function(__local = {}, __option = { 'createNode': CreateVirtualNode, 'convertToNode': ConvertToVirtualNode }) { 
-                  return __getNode(__local, __option) 
+                export default function(__local = {}, __utility = Utility) { 
+                  return __getNode(__local, __utility) 
                 }`;
 
     return source;
@@ -277,19 +271,19 @@ class Transform {
 
   }
 
-  static async formatSource(source, environment = Path.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
+  static async formatSource(sourceIn, environment = Path.extname(FilePath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule') {
 
     let configuration = null;
     configuration = JSON5.parse(await FileSystem.readFile(Require.resolve('./transform.babelrc.json')), { 'encoding': 'utf-8' });
     configuration = configuration.env[environment];
 
-    let { code: sourceOut } = await Babel.transformAsync(source, configuration);
+    let { 'code': sourceOut } = await Babel.transformAsync(sourceIn, configuration);
 
     sourceOut = Format(sourceOut, {
       'arrowParens': 'always',
       'bracketSpacing': true,
       'parser': 'babel',
-      'quoteProps': 'consistent',
+      'quoteProps': 'preserve',
       'semi': false,
       'singleQuote': true,
       'tabWidth': 2,

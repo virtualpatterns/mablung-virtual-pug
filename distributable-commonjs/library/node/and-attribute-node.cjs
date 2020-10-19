@@ -16,7 +16,7 @@ class AndAttributeNode extends _node.default {
   }
 
   getSource() {
-    return `__addAndAttribute(${this._andAttribute.val}, __attributeNode)`;
+    return `__utility.addAndAttribute(${this._andAttribute.val}, __attributeNode)`;
   }
   /* c8 ignore next 3 */
 

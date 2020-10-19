@@ -43,7 +43,7 @@ class CodeNode extends _node.default {
         return ` {
                     let value = ${this._node.val}
                     if (typeof value === 'string') {
-                      __node.push(...[__option.convertToNode(value)].flat())
+                      __node.push(...[__utility.convertToNode(value)].flat())
                     } else {
                       __node.push(value)
                     }

@@ -17,7 +17,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 const FilePath = __filename;
 const {
-  paramCase: ParameterCase
+  'paramCase': ParameterCase
 } = ModuleChangeCase.default || ModuleChangeCase;
 
 class Node {

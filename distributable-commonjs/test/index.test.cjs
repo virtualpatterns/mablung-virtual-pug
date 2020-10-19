@@ -12,7 +12,7 @@ _ava.default.before(async test => {
   test.context.index = await Promise.resolve().then(() => _interopRequireWildcard(require("../index.cjs")));
 });
 
-['Transform', 'UnrecognizedMessageTransformError', 'UnsupportedAttributeTransformError', 'UnsupportedCodeTransformError', 'UnsupportedCommentTransformError', 'UnsupportedDocTypeTransformError', 'UnsupportedTagTransformError'].forEach(name => {
+['Transform', 'Utility', 'UnrecognizedMessageTransformError', 'UnsupportedAttributeTransformError', 'UnsupportedCodeTransformError', 'UnsupportedCommentTransformError', 'UnsupportedDocTypeTransformError', 'UnsupportedTagTransformError'].forEach(name => {
   (0, _ava.default)(name, test => {
     test.truthy(test.context.index[name]);
   });

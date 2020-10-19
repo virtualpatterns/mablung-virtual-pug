@@ -5,191 +5,95 @@ Object.defineProperty(exports, '__esModule', {
 })
 exports.default = _default
 
-var _h = _interopRequireDefault(require('virtual-dom/h.js'))
+var _mablungVirtualPug = require('@virtualpatterns/mablung-virtual-pug')
 
-var _htmlToVdom = _interopRequireDefault(require('html-to-vdom'))
-
-var _vnode = _interopRequireDefault(require('virtual-dom/vnode/vnode.js'))
-
-var _vtext = _interopRequireDefault(require('virtual-dom/vnode/vtext.js'))
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj }
-}
-
-// Powered by @virtualpatterns/mablung-virtual-pug v0.0.1-12
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-13
 // FilePath = 'distributable-commonjs/library/transform.cjs'
-const ConvertToVirtualNode = (0, _htmlToVdom.default)({
-  VNode: _vnode.default,
-  VText: _vtext.default
-})
-
-function __getNode(__local = {}, __option = {}) {
+// Path = 'distributable-commonjs/test/library/resource/scenario/inheritance/00-default.pug'
+function __getNode(__local = {}, __utility = {}) {
   const { title } = __local
 
-  function __getAttributeName(name) {
-    return name
-  }
-
-  function __getAttributeValue(name, value, currentValue) {
-    if (typeof value === 'boolean') {
-      value = value ? name : false
-    } else if (typeof value === 'string') {
-      value = currentValue ? `${currentValue} ${value}` : value
-    } else if (Array.isArray(value)) {
-      value = currentValue
-        ? `${currentValue} ${value.join(' ')}`
-        : value.join(' ')
-    } else {
-      switch (name.toUpperCase()) {
-        case 'CLASS':
-          value = Object.keys(value)
-            .filter((key) => value[key])
-            .join(' ')
-          break
-
-        case 'STYLE':
-          value = Object.keys(value)
-            .map((key) => `${key}:${value[key]};`)
-            .join('')
-          break
-      }
-    }
-
-    return value === '' ? undefined : value
-  }
-
-  function __addAttribute(name, value, attributeNode) {
-    if (typeof value === 'boolean' && value === false) {
-      // do nothing
-    } else {
-      name = __getAttributeName(name) //
-
-      value = __getAttributeValue(name, value, attributeNode[name]) //
-
-      if (value !== undefined) {
-        attributeNode[name] = value
-      }
-    }
-  }
-
-  function __getNodeName(name) {
-    return name
-  }
-
-  function __getNodeProperty(property) {
-    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
-
-    let entry = Object.entries(property)
-    entry
-      .sort(([leftName], [rightName]) => leftName.localeCompare(rightName))
-      .forEach(([name, value]) => {
-        if (name.toUpperCase() in map) {
-          delete property[name]
-          property[map[name.toUpperCase()] || name] = value
-        }
-      })
-    return property
-  }
-
-  function __getChildNode(node) {
-    return node
-  }
-
-  function __createNode(name, property, childNode, createNodeFn) {
-    name = __getNodeName(name) //
-
-    property = __getNodeProperty(property) //
-
-    childNode = __getChildNode(childNode) //
-
-    return createNodeFn(
-      name,
-      {
-        attributes: property
-      },
-      childNode
-    )
-  }
-
-  function __getNode(__option = {}) {
+  function __getNode(__utility = {}) {
     const __node = []
 
     __node.push(
-      __createNode(
+      __utility.createNode(
         'html',
         {},
         (() => {
           const __node = []
 
           __node.push(
-            __createNode(
+            __utility.createNode(
               'head',
               {},
               (() => {
                 const __node = []
 
                 __node.push(
-                  __createNode(
+                  __utility.createNode(
                     'title',
                     {},
                     (() => {
                       const __node = []
 
                       __node.push(
-                        ...[__option.convertToNode('My Site - ')].flat()
+                        ...[__utility.convertToNode('My Site - ')].flat()
                       )
 
                       {
                         let value = title
 
                         if (typeof value === 'string') {
-                          __node.push(...[__option.convertToNode(value)].flat())
+                          __node.push(
+                            ...[__utility.convertToNode(value)].flat()
+                          )
                         } else {
                           __node.push(value)
                         }
                       }
                       return __node
-                    })(),
-                    __option.createNode
+                    })()
                   )
                 )
 
                 __node.push(
-                  __createNode(
+                  __utility.createNode(
                     'script',
                     (() => {
                       const __attributeNode = {}
 
-                      __addAttribute('src', '/jquery.js', __attributeNode)
+                      __utility.addAttribute(
+                        'src',
+                        '/jquery.js',
+                        __attributeNode
+                      )
 
                       return __attributeNode
                     })(),
-                    [],
-                    __option.createNode
+                    []
                   )
                 )
 
                 return __node
-              })(),
-              __option.createNode
+              })()
             )
           )
 
           __node.push(
-            __createNode(
+            __utility.createNode(
               'body',
               {},
               (() => {
                 const __node = [] // BlockNode.isEmpty = true
 
                 __node.push(
-                  __createNode(
+                  __utility.createNode(
                     'div',
                     (() => {
                       const __attributeNode = {}
 
-                      __addAttribute('id', 'footer', __attributeNode)
+                      __utility.addAttribute('id', 'footer', __attributeNode)
 
                       return __attributeNode
                     })(),
@@ -197,7 +101,7 @@ function __getNode(__local = {}, __option = {}) {
                       const __node = []
 
                       __node.push(
-                        __createNode(
+                        __utility.createNode(
                           'p',
                           {},
                           (() => {
@@ -205,46 +109,36 @@ function __getNode(__local = {}, __option = {}) {
 
                             __node.push(
                               ...[
-                                __option.convertToNode('some footer content')
+                                __utility.convertToNode('some footer content')
                               ].flat()
                             )
 
                             return __node
-                          })(),
-                          __option.createNode
+                          })()
                         )
                       )
 
                       return __node
-                    })(),
-                    __option.createNode
+                    })()
                   )
                 )
 
                 return __node
-              })(),
-              __option.createNode
+              })()
             )
           )
 
           return __node
-        })(),
-        __option.createNode
+        })()
       )
     )
 
     return __node
   }
 
-  return __getNode(__option)
+  return __getNode(__utility)
 }
 
-function _default(
-  __local = {},
-  __option = {
-    createNode: _h.default,
-    convertToNode: ConvertToVirtualNode
-  }
-) {
-  return __getNode(__local, __option)
+function _default(__local = {}, __utility = _mablungVirtualPug.Utility) {
+  return __getNode(__local, __utility)
 }
