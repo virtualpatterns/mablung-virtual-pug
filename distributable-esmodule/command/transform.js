@@ -10,7 +10,6 @@ const Process = process;
 
 Command.
 version(Package.version);
-// .option('--data-path <path>', 'Path of ...')
 
 Command.
 command('create-module <source-path> [target-path]').

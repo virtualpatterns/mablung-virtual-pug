@@ -13,8 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const Process = process;
 
-_commander.default.version(_package.Package.version); // .option('--data-path <path>', 'Path of ...')
-
+_commander.default.version(_package.Package.version);
 
 _commander.default.command('create-module <source-path> [target-path]').description('Create a module that returns virtual nodes').action(async (sourcePath, targetPath) => {
   try {
