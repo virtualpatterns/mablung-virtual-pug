@@ -2,7 +2,7 @@ import DefaultChangeCase, * as ModuleChangeCase from 'change-case'
 import Path from 'path'
 
 const FilePath = __filePath
-const { paramCase: ParameterCase } = DefaultChangeCase || ModuleChangeCase
+const { 'paramCase': ParameterCase } = DefaultChangeCase || ModuleChangeCase
 
 class Node {
 

@@ -15,7 +15,7 @@ class AttributeNode extends Node {
     if (this._attribute.mustEscape) {
       throw new UnsupportedAttributeTransformError(this._attribute)
     } else {
-      return `__addAttribute('${this._attribute.name}', ${this._attribute.val}, __attributeNode)`
+      return `__utility.addAttribute('${this._attribute.name}', ${this._attribute.val}, __attributeNode)`
     }
 
   }

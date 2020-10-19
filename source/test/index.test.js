@@ -6,6 +6,7 @@ Test.before(async (test) => {
 
 ;[
   'Transform',
+  'Utility',
   'UnrecognizedMessageTransformError',
   'UnsupportedAttributeTransformError',
   'UnsupportedCodeTransformError',
