@@ -10,11 +10,6 @@ class AndAttributeNode extends Node {
 
   getSource() {
     return `__utility.addAndAttribute(${this._andAttribute.val}, __attributeNode)`;
-  }
-
-  /* c8 ignore next 3 */
-  static __addAndAttribute(object, attributeNode) {
-    Object.entries(object).forEach(([name, value]) => __addAttribute(name, value, attributeNode)); // eslint-disable-line no-undef
   }}
 
 

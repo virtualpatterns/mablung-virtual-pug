@@ -25,6 +25,8 @@ var _pugLoad = _interopRequireDefault(require("pug-load"));
 
 var _minimatch = _interopRequireDefault(require("minimatch"));
 
+var _deepmerge = _interopRequireDefault(require("deepmerge"));
+
 var _pugParser = _interopRequireDefault(require("pug-parser"));
 
 var _path = _interopRequireDefault(require("path"));
@@ -53,9 +55,8 @@ const Require = require;
 
 class Transform {
   static getASTFromContent(content, option = {
-    'path': '(anonymous)'
+    'path': '(unknown)'
   }) {
-    // console.log('Transform.getASTFromContent(content, option) { ... }')
     let lexerOutput = (0, _pugLexer.default)(content, {
       'filename': option.path
     });
@@ -71,9 +72,8 @@ class Transform {
   }
 
   static async getSourceFromContent(content, option = {
-    'path': '(anonymous)'
+    'path': '(unknown)'
   }) {
-    // console.log('Transform.getSourceFromContent(content, option) { ... }')
     let AST = this.getASTFromContent(content, option);
     let blockNode = new _blockNode.default(AST, option);
     let blockSource = await blockNode.getSource();
@@ -82,43 +82,7 @@ class Transform {
                       ${blockSource}
                       return __node
                     }`;
-    let local = await this._getLocalFromSource(source); // let local = null
-    // let countOfLocal = null
-    // let pattern = /eslint-disable-line no-undef/gi
-    // do {
-    //   local = await this._getLocalFromSource(source)
-    //   countOfLocal = local.length
-    //   if (local.includes('__createNode')) {
-    //     source = `  function ${TagNode.__getNodeName.toString().replace(pattern, '')}
-    //                 function ${TagNode.__getNodeProperty.toString().replace(pattern, '')}
-    //                 function ${TagNode.__getChildNode.toString().replace(pattern, '')}
-    //                 function ${TagNode.__createNode.toString().replace(pattern, '')}
-    //                 ${source}`
-    //     local = local
-    //       .filter((local) => local !== '__createNode')
-    //   }
-    //   if (local.includes('__addAttribute')) {
-    //     source = `  function ${AttributeNode.__getAttributeName.toString().replace(pattern, '')}
-    //                 function ${AttributeNode.__getAttributeValue.toString().replace(pattern, '')}
-    //                 function ${AttributeNode.__addAttribute.toString().replace(pattern, '')}
-    //                 ${source}`
-    //     local = local
-    //       .filter((local) => local !== '__addAttribute')
-    //   }
-    //   if (local.includes('__forEach')) {
-    //     source = `  function ${EachNode.__forEach.toString().replace(pattern, '')}
-    //                 ${source}`
-    //     local = local
-    //       .filter((local) => local !== '__forEach')
-    //   }
-    //   if (local.includes('__addAndAttribute')) {
-    //     source = `  function ${AndAttributeNode.__addAndAttribute.toString().replace(pattern, '')}
-    //                 ${source}`
-    //     local = local
-    //       .filter((local) => local !== '__addAndAttribute')
-    //   }
-    // } while (local.length < countOfLocal)
-
+    let local = await this._getLocalFromSource(source);
     return {
       source,
       local
@@ -126,9 +90,8 @@ class Transform {
   }
 
   static async getFunctionSourceFromContent(content, option = {
-    'path': '(anonymous)'
+    'path': '(unknown)'
   }) {
-    // console.log('Transform.getFunctionSourceFromContent(content, option) { ... }')
     let {
       source,
       local
@@ -143,9 +106,8 @@ class Transform {
   }
 
   static async getFunctionFromContent(content, option = {
-    'path': '(anonymous)'
+    'path': '(unknown)'
   }) {
-    // console.log('Transform.getFunctionFromContent(content, option) { ... }')
     let source = null;
     source = await this.getFunctionSourceFromContent(content, option);
     source = await this.formatSource(source);
@@ -154,16 +116,19 @@ class Transform {
     return fn;
   }
 
-  static async getModuleSourceFromContent(content, option = {
-    'path': '(anonymous)'
-  }) {
-    // console.log('Transform.getModuleSourceFromContent(content, option) { ... }')
+  static async getModuleSourceFromContent(content, userOption = {}) {
+    let defaultOption = {
+      'path': '(unknown)',
+      'utility': '@virtualpatterns/mablung-virtual-pug/utility'
+    };
+    let option = (0, _deepmerge.default)(defaultOption, userOption);
     let source = null;
-    source = await this.getFunctionSourceFromContent(content, option);
+    source = await this.getFunctionSourceFromContent(content, {
+      'path': option.path
+    });
     source = ` // Created by ${_package.Package.name} v${_package.Package.version}
-                // FilePath = '${_path.default.relative('', FilePath)}'
-                // Path = '${option.path === '(anonymous)' ? '(anonymous)' : _path.default.relative('', option.path)}'
-                import { Utility } from '@virtualpatterns/mablung-virtual-pug'
+                // Path = ${option.path === '(unknown)' ? option.path : `'${_path.default.relative('', option.path)}'`}
+                import Utility from '${option.utility}'
                 ${source}
                 export default function(__local = {}, __utility = Utility) { 
                   return __getNode(__local, __utility) 
@@ -172,7 +137,6 @@ class Transform {
   }
 
   static async getASTFromPath(path) {
-    // console.log(`Transform.getASTFromPath('${Path.relative('', path)}') { ... }`)
     let content = await _fsExtra.default.readFile(path, {
       'encoding': 'utf-8'
     });
@@ -183,7 +147,6 @@ class Transform {
   }
 
   static async getSourceFromPath(path) {
-    // console.log(`Transform.getSourceFromPath('${Path.relative('', path)}') { ... }`)
     let content = await _fsExtra.default.readFile(path, {
       'encoding': 'utf-8'
     });
@@ -194,7 +157,6 @@ class Transform {
   }
 
   static async getFunctionSourceFromPath(path) {
-    // console.log('Transform.getFunctionSourceFromPath('${Path.relative('', path)}') { ... }`)
     let content = await _fsExtra.default.readFile(path, {
       'encoding': 'utf-8'
     });
@@ -205,7 +167,6 @@ class Transform {
   }
 
   static async getFunctionFromPath(path) {
-    // console.log(`Transform.getFunctionFromPath('${Path.relative('', path)}') { ... }`)
     let content = await _fsExtra.default.readFile(path, {
       'encoding': 'utf-8'
     });
@@ -215,22 +176,22 @@ class Transform {
     return fn;
   }
 
-  static async getModuleSourceFromPath(path) {
-    // console.log('Transform.getModuleSourceFromPath('${Path.relative('', path)}') { ... }`)
+  static async getModuleSourceFromPath(path, option) {
     let content = await _fsExtra.default.readFile(path, {
       'encoding': 'utf-8'
     });
-    let source = await this.getModuleSourceFromContent(content, {
+    let source = await this.getModuleSourceFromContent(content, { ...option,
       'path': path
     });
     return source;
   }
 
-  static async createModuleFromPath(sourcePath, targetPath = _fsExtra.default.statSync(sourcePath).isDirectory() ? sourcePath : `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`, option = {
-    'encoding': 'utf-8',
-    'flag': 'wx'
-  }) {
-    // console.log(`Transform.createModuleFromPath('${Path.relative('', sourcePath)}', '${Path.relative('', targetPath)}', option) { ... }`)
+  static async createModuleFromPath(sourcePath, targetPath = _fsExtra.default.statSync(sourcePath).isDirectory() ? sourcePath : `${_path.default.dirname(sourcePath)}/${_path.default.basename(sourcePath, _path.default.extname(sourcePath))}${_path.default.extname(FilePath)}`, userOption = {}) {
+    let defaultOption = {
+      'encoding': 'utf-8',
+      'flag': 'wx'
+    };
+    let option = (0, _deepmerge.default)(defaultOption, userOption);
     let sourceInformation = await _fsExtra.default.stat(sourcePath);
 
     if (sourceInformation.isDirectory()) {
@@ -259,11 +220,13 @@ class Transform {
 
       if (isCreated) {
         let source = null;
-        source = await this.getModuleSourceFromPath(sourcePath);
+        source = await this.getModuleSourceFromPath(sourcePath, option);
         source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
-        await _fsExtra.default.ensureDir(_path.default.dirname(targetPath)); // console.log(`await FileSystem.writeFile('${Path.relative('', targetPath)}', source, option)`)
-
-        return _fsExtra.default.writeFile(targetPath, source, option);
+        await _fsExtra.default.ensureDir(_path.default.dirname(targetPath));
+        return _fsExtra.default.writeFile(targetPath, source, {
+          'encoding': option.encoding,
+          'flag': option.flag
+        });
       }
     }
   }

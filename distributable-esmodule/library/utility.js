@@ -138,5 +138,5 @@ class Utility {
 
 
 
-export { Utility };
+export default Utility;
 //# sourceMappingURL=utility.js.map

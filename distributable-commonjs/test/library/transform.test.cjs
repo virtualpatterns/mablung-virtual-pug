@@ -8,16 +8,11 @@ var _index = require("../../index.cjs");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import CreateNode from 'virtual-dom/h.js'
-// import _ConvertToNode from 'html-to-vdom'
-// import VirtualNode from 'virtual-dom/vnode/vnode.js'
-// import VirtualText from 'virtual-dom/vnode/vtext.js'
 const FilePath = __filename;
 
 const FolderPath = _path.default.dirname(FilePath);
 
-const Require = require; // const ConvertToNode = _ConvertToNode({ 'VNode': VirtualNode, 'VText': VirtualText })
-
+const Require = require;
 (0, _ava.default)('getASTFromPath(path)', async test => {
   await test.notThrowsAsync(_index.Transform.getASTFromPath(Require.resolve('./resource/00-default.pug')));
 });
@@ -26,21 +21,7 @@ const Require = require; // const ConvertToNode = _ConvertToNode({ 'VNode': Virt
 });
 (0, _ava.default)('getFunctionSourceFromPath(path)', async test => {
   await test.notThrowsAsync(_index.Transform.getFunctionSourceFromPath(Require.resolve('./resource/00-default.pug')));
-}) // Test('createModuleFromPath(path)', async (test) => {
-//   let module = await Transform.createModuleFromPath(Require.resolve('./resource/00-default.pug'))
-//   let virtualFn = module.default
-//   test.notThrows(() => virtualFn())
-// })
-// ;[ 
-//   Require.resolve('./resource/transform/attribute/12-class-literal-classname.pug')
-// ].forEach((path) => {
-//   Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}') includes 'className'`, async (test) => {
-//     let virtualFn = await Transform.getFunctionFromPath(path)
-//     let virtualNode = virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })[0]
-//     test.true('className' in virtualNode.properties)
-//   })
-// })
-;
+});
 [Require.resolve('./resource/transform/attribute/07-escaped-attributes.pug')].forEach(path => {
   (0, _ava.default)(`getFunctionFromPath('${_path.default.relative(`${FolderPath}/resource/transform`, path)}') throws UnsupportedAttributeTransformError`, async test => {
     await test.throwsAsync(_index.Transform.getFunctionFromPath(path), {
@@ -75,12 +56,5 @@ const Require = require; // const ConvertToNode = _ConvertToNode({ 'VNode': Virt
       'instanceOf': _index.UnsupportedTagTransformError
     });
   });
-}); // This had already existed in scenario.test
-// ;[ 
-//   Require.resolve('./resource/transform/text/01-literal-html.only.pug')
-// ].forEach((path) => {
-//   Test(`getFunctionFromPath('${Path.relative(`${FolderPath}/resource/transform`, path)}')(...) throws TypeError`, async (test) => {
-//     await test.throwsAsync(Transform.getFunctionFromPath(path).then((virtualFn) => virtualFn({}, { 'createNode': CreateNode, 'convertToNode': ConvertToNode })), { 'instanceOf': TypeError })
-//   })
-// })
+});
 //# sourceMappingURL=transform.test.cjs.map

@@ -41,53 +41,10 @@ class TagNode extends Node {
            return __node
          })()`;
 
-      // return  `__node.push(__createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}, __option.createNode))`
       return `__node.push(__utility.createNode('${this._node.name}', ${blockAttributeSource}, ${blockSource}))`;
 
     }
 
-  }
-
-  /* c8 ignore next 9 */
-  static __createNode(name, property, childNode, createNodeFn) {
-
-    name = __getNodeName(name); // eslint-disable-line no-undef
-    property = __getNodeProperty(property); // eslint-disable-line no-undef
-    childNode = __getChildNode(childNode); // eslint-disable-line no-undef
-
-    return createNodeFn(name, { 'attributes': property }, childNode);
-
-  }
-
-  /* c8 ignore next 3 */
-  static __getNodeName(name) {
-    return name;
-  }
-
-  /* c8 ignore next 17 */
-  static __getNodeProperty(property) {
-
-    let map = {}; // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
-    let entry = Object.entries(property);
-
-    entry.
-    sort(([leftName], [rightName]) => leftName.localeCompare(rightName)).
-    forEach(([name, value]) => {
-
-      if (name.toUpperCase() in map) {
-        delete property[name];
-        property[map[name.toUpperCase()] || name] = value;
-      }
-
-    });
-
-    return property;
-
-  }
-
-  /* c8 ignore next 3 */
-  static __getChildNode(node) {
-    return node;
   }}
 
 

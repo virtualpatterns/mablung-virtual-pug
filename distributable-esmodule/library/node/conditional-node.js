@@ -10,18 +10,6 @@ class ConditionalNode extends Node {
 
   async getSource() {
 
-    // source.push(`if ( ${node.test} ) {`)
-    // if (node.consequent) {
-    //   this.processBlock(node.consequent, source)
-    // }
-    // source.push('}')
-
-    // if (node.alternate) {
-    //   source.push('else {')
-    //   this.processNode(node.alternate, source)
-    //   source.push('}')
-    // }
-
     let source = null;
 
     let blockNode = new BlockNode(this._node.consequent, this._option);

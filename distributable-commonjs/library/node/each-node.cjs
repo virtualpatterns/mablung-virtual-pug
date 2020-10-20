@@ -34,19 +34,6 @@ class EachNode extends _node.default {
 
     return source;
   }
-  /* c8 ignore next 17 */
-
-
-  static __forEach(value, fn) {
-    if (Array.isArray(value)) {
-      value.forEach(fn);
-      return value.length;
-    } else {
-      let entry = Object.entries(value);
-      entry.forEach(([name, value]) => fn(value, name));
-      return entry.length;
-    }
-  }
 
 }
 

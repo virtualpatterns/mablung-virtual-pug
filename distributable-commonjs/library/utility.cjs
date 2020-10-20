@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Utility = void 0;
+exports.default = void 0;
 
 var _htmlToVdom = _interopRequireDefault(require("html-to-vdom"));
 
@@ -133,5 +133,6 @@ class Utility {
 
 }
 
-exports.Utility = Utility;
+var _default = Utility;
+exports.default = _default;
 //# sourceMappingURL=utility.cjs.map

@@ -17,9 +17,6 @@ class CaseNode extends _node.default {
   }
 
   async getSource() {
-    // source.push(`switch(${node.expr}) {`)
-    // node.block.nodes.forEach((whenNode) => this.processWhen(whenNode, source))
-    // source.push('}')
     let blockWhenNode = new _blockWhenNode.default(this._node.block, this._option);
     let blockWhenSource = null;
     blockWhenSource = await blockWhenNode.getSource();

@@ -1,7 +1,6 @@
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-13
-// FilePath = 'distributable-esmodule/library/transform.js'
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
 // Path = 'distributable-esmodule/test/library/resource/scenario/attribute/04-quoted-attributes.pug'
-import { Utility } from '@virtualpatterns/mablung-virtual-pug'
+import Utility from '@virtualpatterns/mablung-virtual-pug/utility'
 function __getNode(__local = {}, __utility = {}) {
   function __getNode(__utility = {}) {
     const __node = []

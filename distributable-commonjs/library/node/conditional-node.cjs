@@ -17,16 +17,6 @@ class ConditionalNode extends _node.default {
   }
 
   async getSource() {
-    // source.push(`if ( ${node.test} ) {`)
-    // if (node.consequent) {
-    //   this.processBlock(node.consequent, source)
-    // }
-    // source.push('}')
-    // if (node.alternate) {
-    //   source.push('else {')
-    //   this.processNode(node.alternate, source)
-    //   source.push('}')
-    // }
     let source = null;
     let blockNode = new _blockNode.default(this._node.consequent, this._option);
     let blockSource = blockNode.isEmpty ? '' : await blockNode.getSource();

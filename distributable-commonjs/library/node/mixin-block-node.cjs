@@ -15,7 +15,6 @@ class MixinBlockNode extends _node.default {
   }
 
   getSource() {
-    // source.push('_nodes = _nodes.concat(block)')
     return '__node.push(...block)';
   }
 

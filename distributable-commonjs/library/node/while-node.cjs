@@ -17,11 +17,6 @@ class EachNode extends _node.default {
   }
 
   async getSource() {
-    // source.push(`while ( ${node.test} ) {`)
-    // if (node.block) {
-    //   this.processBlock(node.block, source)
-    // }
-    // source.push('}')
     let source = null;
     source = `while ( ${this._node.test} )`;
 
