@@ -8,7 +8,6 @@ class MixinBlockNode extends Node {
   }
 
   getSource() {
-    // source.push('_nodes = _nodes.concat(block)')
     return '__node.push(...block)'
   }
 

@@ -10,29 +10,6 @@ class WhenNode extends Node {
 
   async getSource() {
 
-    // if (node.expr == 'default') {
-    //   source.push(`${node.expr}:`)
-    //   this.processBlock(node.block, source)
-    // } else {
-
-    //   source.push(`case ${node.expr}:`)
-
-    //   if (node.block) {
-
-    //     if (node.block.nodes.length == 1 &&
-    //         node.block.nodes[0].type.toUpperCase() == 'CODE' &&
-    //         node.block.nodes[0].val == 'break') {
-    //       // OK
-    //     } else {
-    //       this.processBlock(node.block, source)
-    //     }
-
-    //     source.push('break')
-
-    //   }
-
-    // }
-
     if (this._node.block) {
 
       let blockNode = new BlockNode(this._node.block, this._option)
@@ -41,7 +18,6 @@ class WhenNode extends Node {
       if (this._node.expr === 'default') {
         return  ` default: 
                     ${blockSource}`
-                   
       } else {
 
         if (this._node.block.nodes.length === 1 &&

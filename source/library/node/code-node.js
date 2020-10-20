@@ -12,29 +12,7 @@ class CodeNode extends Node {
 
   async getSource() {
 
-    // if (node.buffer) {
-    //   if (node.mustEscape) {
-    //     source.push(`_nodes = _nodes.concat(${node.val})`)
-    //   } else {
-    //     throw new UnSupportedError('Buffered unescaped source is unsupported.')
-    //   }
-    // } else {
-  
-    //   source.push(`${node.val}`)
-  
-    //   if (node.block) {
-    //     source.push('{')
-    //     this.processBlock(node.block, source)
-    //     source.push('}')
-    //   } else {
-    //     source.push('')
-    //   }
-  
-    // }
-  
     if (this._node.buffer) {
-
-      // return `__node.push(${this._node.val})`
 
       if (this._node.mustEscape) {
         throw new UnsupportedCodeTransformError(this._node)
