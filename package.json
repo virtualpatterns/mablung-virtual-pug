@@ -1,4 +1,8 @@
 {
+  "alias": {
+    "utility-cjs": "./distributable-commonjs/library/utility.cjs",
+    "utility-esm": "./distributable-esmodule/library/utility.js"
+  },
   "author": "virtualpatterns.com <code@virtualpatterns.com> (http://www.virtualpatterns.com)",
   "ava": {
     "failFast": true,
@@ -34,6 +38,10 @@
       "import": "./distributable-esmodule/index.js",
       "require": "./distributable-commonjs/index.cjs"
     },
+    "./utility": {
+      "import": "./distributable-esmodule/library/utility.js",
+      "require": "./distributable-commonjs/library/utility.cjs"
+    },
     "./package.json": "./package.json"
   },
   "license": "GPL-3.0+",
@@ -65,9 +73,6 @@
     "test": "run-s --silent build \"test:10 {@}\" --",
     "run:10": "node --no-warnings --unhandled-rejections=strict",
     "run": "run-s --silent build \"run:10 {@}\" --",
-    "run:server:10:skip": "live-server --host=0.0.0.0 --port=8080 --mount=/:distributable-commonjs/test/library/www-bundle --mount=/favicon.ico:distributable-commonjs/test/library/www-bundle/resource/application.ico --open=index.html --watch=distributable-commonjs/test/library/www-bundle --verbose",
-    "run:server:20": "live-server --host=0.0.0.0 --port=8081 --mount=/:distributable-esmodule/test/library/www-bundle --mount=/favicon.ico:distributable-esmodule/test/library/www-bundle/resource/application.ico --open=index.html --watch=distributable-esmodule/test/library/www-bundle --verbose",
-    "run:server": "run-p --silent run:server:*",
     "pre:push:10": "git add coverage distributable-commonjs distributable-esmodule",
     "pre:push:20": "git commit --message=\"post-test\"",
     "pre:push": "run-s --silent test pre:push:*",
@@ -92,6 +97,7 @@
     "ava": "^3.13.0",
     "c8": "^7.3.4",
     "cross-env": "^7.0.2",
+    "esbuild": "^0.7.17",
     "eslint": "^7.11.0",
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
@@ -101,7 +107,6 @@
     "minimatch": "^3.0.4",
     "npm-check-updates": "^9.1.0",
     "npm-run-all": "^4.1.5",
-    "parcel-bundler": "^1.12.4",
     "pretty": "^2.0.0",
     "pug": "^3.0.0",
     "puppeteer": "^5.3.1",
@@ -111,6 +116,7 @@
     "@pwn/is": "^1.0.2",
     "change-case": "^4.1.1",
     "commander": "^6.1.0",
+    "deepmerge": "^4.2.2",
     "fs-extra": "^9.0.1",
     "html-to-vdom": "^0.7.0",
     "jsesc": "^3.0.1",
