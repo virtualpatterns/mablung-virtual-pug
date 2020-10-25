@@ -13,7 +13,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj }
 }
 
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-15
 // Path = 'distributable-commonjs/test/library/resource/scenario/inheritance/01-additional-block-inherits.pug'
 function __getNode(__local = {}, __utility = {}) {
   const { title } = __local

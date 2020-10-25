@@ -13,7 +13,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj }
 }
 
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-15
 // Path = 'distributable-commonjs/test/library/resource/scenario/interpolation/06-whitespace-control.pug'
 function __getNode(__local = {}, __utility = {}) {
   function __getNode(__utility = {}) {

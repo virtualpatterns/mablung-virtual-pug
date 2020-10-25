@@ -1,4 +1,4 @@
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-15
 // Path = 'distributable-commonjs/test/library/www/script/element.pug'
 import Utility from '../../../../library/utility.cjs'
 function __getNode(__local = {}, __utility = {}) {

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../source/test/library/resource/target/00-source.js"],"names":["console","log"],"mappings":"AAAAA,OAAO,CAACC,GAAR,CAAY,eAAZ","sourcesContent":["console.log('Hello, world!')"],"file":"00-source.js"}

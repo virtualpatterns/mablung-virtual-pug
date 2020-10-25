@@ -203,15 +203,17 @@ class Transform {
       });
       let createModule = [];
       createModule = createModule.concat(item.filter(item => item.isDirectory()).map(folder => this.createModuleFromPath(`${sourcePath}/${folder.name}`, `${targetPath}/${folder.name}`, option)));
-      createModule = createModule.concat(item.filter(item => item.isFile()).filter(file => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).filter(file => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${_path.default.basename(file.name, _path.default.extname(file.name))}${_path.default.extname(FilePath)}`), option));
+      createModule = createModule.concat(item.filter(item => item.isFile()).filter(file => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).filter(file => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : (0, _minimatch.default)(file.name, pattern), false)).map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${_path.default.basename(file.name, _path.default.extname(file.name))}${_path.default.extname(FilePath)}`, option)));
       return Promise.all(createModule);
     } else {
       let isCreated = false;
 
       if (await _fsExtra.default.pathExists(targetPath)) {
-        let targetInformation = await _fsExtra.default.stat(targetPath);
+        let targetInformation = await _fsExtra.default.stat(targetPath); // console.log(`Existing '${Path.relative('', targetPath)}' ...`)
+        // console.log(`Source ${sourceInformation.mtime}`)
+        // console.log(`Target ${targetInformation.mtime}`)
 
-        if (sourceInformation.mtime > targetInformation.mtime) {
+        if (sourceInformation.mtime >= targetInformation.mtime) {
           isCreated = true;
         }
       } else {
@@ -221,12 +223,15 @@ class Transform {
       if (isCreated) {
         let source = null;
         source = await this.getModuleSourceFromPath(sourcePath, option);
-        source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
+        source = await this.formatSource(source, _path.default.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule'); // console.log(`Creating '${Path.relative('', targetPath)}' ...`)
+
         await _fsExtra.default.ensureDir(_path.default.dirname(targetPath));
         return _fsExtra.default.writeFile(targetPath, source, {
           'encoding': option.encoding,
           'flag': option.flag
         });
+      } else {
+        return Promise.resolve();
       }
     }
   }

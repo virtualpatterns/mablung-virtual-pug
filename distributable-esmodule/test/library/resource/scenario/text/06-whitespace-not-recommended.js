@@ -1,4 +1,4 @@
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-15
 // Path = 'distributable-esmodule/test/library/resource/scenario/text/06-whitespace-not-recommended.pug'
 import Utility from '@virtualpatterns/mablung-virtual-pug/utility'
 function __getNode(__local = {}, __utility = {}) {

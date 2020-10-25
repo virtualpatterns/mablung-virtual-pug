@@ -181,7 +181,7 @@ class Transform {
       filter(item => item.isFile()).
       filter(file => includePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false)).
       filter(file => !excludePattern.reduce((isMatch, pattern) => isMatch ? isMatch : Match(file.name, pattern), false)).
-      map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${Path.basename(file.name, Path.extname(file.name))}${Path.extname(FilePath)}`), option));
+      map(file => this.createModuleFromPath(`${sourcePath}/${file.name}`, `${targetPath}/${Path.basename(file.name, Path.extname(file.name))}${Path.extname(FilePath)}`, option)));
 
       return Promise.all(createModule);
 
@@ -193,7 +193,11 @@ class Transform {
 
         let targetInformation = await FileSystem.stat(targetPath);
 
-        if (sourceInformation.mtime > targetInformation.mtime) {
+        // console.log(`Existing '${Path.relative('', targetPath)}' ...`)
+        // console.log(`Source ${sourceInformation.mtime}`)
+        // console.log(`Target ${targetInformation.mtime}`)
+
+        if (sourceInformation.mtime >= targetInformation.mtime) {
           isCreated = true;
         }
 
@@ -207,9 +211,13 @@ class Transform {
         source = await this.getModuleSourceFromPath(sourcePath, option);
         source = await this.formatSource(source, Path.extname(targetPath).toUpperCase() === '.CJS' ? 'commonjs' : 'esmodule');
 
+        // console.log(`Creating '${Path.relative('', targetPath)}' ...`)
+
         await FileSystem.ensureDir(Path.dirname(targetPath));
         return FileSystem.writeFile(targetPath, source, { 'encoding': option.encoding, 'flag': option.flag });
 
+      } else {
+        return Promise.resolve();
       }
 
     }

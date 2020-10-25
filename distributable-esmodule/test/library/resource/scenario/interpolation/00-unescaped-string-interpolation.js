@@ -1,4 +1,4 @@
-// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-14
+// Created by @virtualpatterns/mablung-virtual-pug v0.0.1-15
 // Path = 'distributable-esmodule/test/library/resource/scenario/interpolation/00-unescaped-string-interpolation.pug'
 import Utility from '@virtualpatterns/mablung-virtual-pug/utility'
 function __getNode(__local = {}, __utility = {}) {
