@@ -11,7 +11,7 @@
       "autoAttachChildProcesses": false,
       "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/distributable-cjs/sandbox/ivr.cjs",
+      "program": "${workspaceFolder}/distributable-commonjs/sandbox/baba.cjs",
       "skipFiles": [ "<node_internals>/**" ],
       "stopOnEntry": false
     },

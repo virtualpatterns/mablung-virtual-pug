@@ -12,6 +12,48 @@ class Utility {
     return ConvertToVirtualNode(...parameter)
   }
 
+  // TagNode
+  /* c8 ignore next 9 */
+  static createNode(name, property, childNode) {
+
+    name = this.getNodeName(name)
+    property = this.getNodeProperty(property)
+    childNode = this.getChildNode(childNode)
+
+    return CreateVirtualNode(name, { 'attributes': property }, childNode)
+
+  }
+
+  /* c8 ignore next 3 */
+  static getNodeName(name) {
+    return name
+  }
+
+  /* c8 ignore next 17 */
+  static getNodeProperty(property) {
+
+    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
+    let entry = Object.entries(property)
+
+    entry
+      .sort(([ leftName ], [ rightName ]) => leftName.localeCompare(rightName))
+      .forEach(([ name, value ]) => {
+
+        if (name.toUpperCase() in map) {
+          delete property[name]
+          property[map[name.toUpperCase()] || name] = value
+        }
+
+      })
+
+    return property
+
+  }
+
+  /* c8 ignore next 3 */
+  static getChildNode(node) {
+    return node
+  }
   // AndAttributeNode
   /* c8 ignore next 3 */
   static addAndAttribute(object, attributeNode) {
@@ -93,48 +135,6 @@ class Utility {
 
   }
 
-  // TagNode
-  /* c8 ignore next 9 */
-  static createNode(name, property, childNode) {
-
-    name = this.getNodeName(name)
-    property = this.getNodeProperty(property)
-    childNode = this.getChildNode(childNode)
-
-    return CreateVirtualNode(name, { 'attributes': property }, childNode)
-
-  }
-
-  /* c8 ignore next 3 */
-  static getNodeName(name) {
-    return name
-  }
-
-  /* c8 ignore next 17 */
-  static getNodeProperty(property) {
-
-    let map = {} // { 'CLASS': 'className', 'FOR': 'htmlFor', 'HTTP-EQUIV': 'httpEquiv' }
-    let entry = Object.entries(property)
-
-    entry
-      .sort(([ leftName ], [ rightName ]) => leftName.localeCompare(rightName))
-      .forEach(([ name, value ]) => {
-
-        if (name.toUpperCase() in map) {
-          delete property[name]
-          property[map[name.toUpperCase()] || name] = value
-        }
-
-      })
-
-    return property
-
-  }
-
-  /* c8 ignore next 3 */
-  static getChildNode(node) {
-    return node
-  }
 
 }
 
